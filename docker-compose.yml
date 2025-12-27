@@ -1,0 +1,25 @@
+# docker-compose.yml (Save in C:\study\Backend Pratice\Project\SpendWise-Ai\)
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/spendwise
+      - REDIS_URL=redis://redis:6379
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  mongo_data:
