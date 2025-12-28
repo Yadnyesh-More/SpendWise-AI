@@ -41,7 +41,7 @@ app.post('/test', (req, res) => {
 
 // Public auth routes
 // Hit these from frontend: POST http://localhost:5000/auth/register, /auth/login
-app.use('/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 
 // Cached public transactions (if you want unauth summary list)
 app.use('/transactions', transactionRoutes);
