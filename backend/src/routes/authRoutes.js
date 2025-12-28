@@ -2,6 +2,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import { loginLimiter } from '../middleware/rateLimiter.js';
+console.log('✅ authRoutes loaded');
 
 const router = express.Router();
 

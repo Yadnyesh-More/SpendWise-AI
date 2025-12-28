@@ -1,65 +1,3 @@
-// import express from 'express';
-// import cors from 'cors';
-// import dotenv from 'dotenv';
-// import mongoSanitize from 'express-mongo-sanitize';
-// import helmet from 'helmet';
-// import simpleCache from "./src/middleware/simpleCache.js";
-
-// // Load environment variables FIRST
-// dotenv.config();
-
-// // Import Database
-// import connectDB from './src/config/db.js';
-
-// // Import Routes
-// import authRoutes from './src/routes/authRoutes.js';
-// import transactionRoutes from './src/routes/transactionRoutes.js';
-// import adminRoutes from './src/routes/adminRoutes.js';
-// import aiRoutes from './src/routes/aiRoutes.js';
-// import authMiddleware from './src/middleware/auth.js';
-
-// // Initialize App FIRST
-// const app = express();
-
-// // ============ MIDDLEWARE ============
-// app.use(helmet());
-// app.use(express.json({ limit: '10mb' }));
-// app.use(express.urlencoded({ extended: true }));
-// app.use(cors({ origin: ['http://localhost:3000', 'http://localhost:5173'] }));
-// app.use(mongoSanitize());
-
-// // Connect Database
-// connectDB();
-
-// // Test endpoint
-// app.post('/test', (req, res) => {
-//   console.log('✅ TEST body:', req.body);
-//   res.json({ success: true, received: req.body });
-// });
-
-// // Routes
-// app.use('/auth', authRoutes);
-// app.use('/api/auth', authRoutes);
-// app.use('/transactions', simpleCache, transactionRoutes);
-// app.use('/api/transactions', authMiddleware, transactionRoutes);
-// app.use('/api/admin', authMiddleware, adminRoutes);
-// app.use('/api/ai', authMiddleware, aiRoutes);
-
-// app.get('/health', (req, res) => res.json({ success: true }));
-
-// // Error handlers
-// app.use((req, res) => res.status(404).json({ success: false, message: 'Route not found' }));
-// app.use((err, req, res) => {
-//   console.error('ERROR:', err);
-//   res.status(500).json({ success: false, message: err.message });
-// });
-
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => {
-//   console.log(`✅ Server: http://localhost:${PORT}`);
-// });
-
-
 // backend/server.js
 import express from 'express';
 import cors from 'cors';
@@ -114,8 +52,15 @@ app.use('/api/admin', authMiddleware, adminRoutes);
 app.use('/api/ai', authMiddleware, aiRoutes);
 
 // Health
-app.get('/health', (req, res) => {
+app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'Server is running' });
+});
+
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Backend server is running 🚀'
+  });
 });
 
 // 404
