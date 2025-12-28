@@ -1,35 +1,53 @@
-// backend/middleware/simpleCache.js
 import redis from "redis";
 
-const client = redis.createClient();
+// ✅ DISABLE REDIS ON RENDER (production)
+const USE_REDIS = process.env.USE_REDIS === 'true' || process.env.NODE_ENV !== 'production';
 
-client.on("error", (err) => console.error("Redis Error:", err));
+let client;
 
-await client.connect();
+if (USE_REDIS) {
+  client = redis.createClient({
+    url: process.env.REDIS_URL || 'redis://localhost:6379'
+  });
+  
+  client.on("error", (err) => console.error("⚠️ Redis Client Error:", err));
+  
+  client.connect().catch((err) => {
+    console.error("❌ Redis connection failed:", err);
+  });
+}
 
 const simpleCache = async (req, res, next) => {
+  // Skip cache if no Redis
+  if (!USE_REDIS || !client) {
+    console.log("📦 Cache disabled - using direct response");
+    return next();
+  }
+
   const key = req.originalUrl;
 
   try {
     const cachedData = await client.get(key);
 
     if (cachedData) {
+      console.log("✅ Cache HIT:", key);
       return res.json(JSON.parse(cachedData));
     }
 
+    console.log("📦 Cache MISS:", key);
+    
     const originalJson = res.json.bind(res);
 
     res.json = (data) => {
-      client.setEx(key, 5, JSON.stringify(data)); // cache for 60 sec
+      client.setEx(key, 300, JSON.stringify(data)); // 5 min cache
       originalJson(data);
     };
 
     next();
   } catch (err) {
-    console.error("Cache error:", err);
-    next();
+    console.error("⚠️ Cache error:", err);
+    next(); // Continue without cache
   }
 };
 
 export default simpleCache;
-
