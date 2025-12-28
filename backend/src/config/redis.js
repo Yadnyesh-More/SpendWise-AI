@@ -1,22 +1,20 @@
-import redis from 'redis';
+// 🚫 REDIS DISABLED - Production Ready (Render)
+const redis = {
+  del: async (key) => {
+    console.log(`🚫 Redis SKIP: del(${key})`);
+    return true;
+  },
+  get: async (key) => {
+    console.log(`🚫 Redis SKIP: get(${key})`);
+    return null;
+  },
+  setEx: async (key, ttl, value) => {
+    console.log(`🚫 Redis SKIP: setEx(${key}, ${ttl})`);
+    return true;
+  },
+  connect: async () => {
+    console.log('🚫 Redis: Disabled on Render');
+  }
+};
 
-const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
-
-const client = redis.createClient({
-  url: redisUrl,
-});
-
-client.on('error', (err) => {
-  console.warn('⚠️ Redis Client Error:', err);
-});
-
-client.on('connect', () => {
-  console.log('✅ Redis Connected');
-});
-
-// Connect to Redis
-client.connect().catch(err => {
-  console.warn('⚠️ Redis Connection Warning:', err.message);
-});
-
-export default client;
+export default redis;

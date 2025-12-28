@@ -1,5 +1,5 @@
 import Transaction from '../models/Transaction.js';
-import redis from '../config/redis.js';
+// import redis from '../config/redis.js';
 
 // Create Transaction
 export const createTransaction = async (req, res) => {
@@ -43,8 +43,8 @@ export const createTransaction = async (req, res) => {
 
     // Clear cache
     try {
-      await redis.del(`transactions:${userId}`);
-      await redis.del(`summary:${userId}`);
+      // await redis.del(`transactions:${userId}`);
+      // await redis.del(`summary:${userId}`);
     } catch (cacheErr) {
       console.warn('Cache warning:', cacheErr.message);
     }
@@ -249,8 +249,8 @@ export const deleteTransaction = async (req, res) => {
     await Transaction.findByIdAndDelete(id);
 
     try {
-      await redis.del(`transactions:${userId}`);
-      await redis.del(`summary:${userId}`);
+      // await redis.del(`transactions:${userId}`);
+      // await redis.del(`summary:${userId}`);
     } catch (cacheErr) {
       console.warn('Cache warning:', cacheErr.message);
     }
