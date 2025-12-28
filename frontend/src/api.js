@@ -4,6 +4,7 @@ import axios from 'axios';
 const api = axios.create({
   baseURL: 'https://spendwise-ai-9fd1.onrender.com/api',
   headers: { 'Content-Type': 'application/json' },
+  withCredentials: true
 });
 
 // ✅ Auto-add JWT token to requests
