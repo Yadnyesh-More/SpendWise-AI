@@ -25,9 +25,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: [process.env.CORS_ORIGIN,'http://localhost:3000', 'https://spendwise-ai-frontend.vercel.app'],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
+app.options("*", cors());
+
 app.use(mongoSanitize());
 
 // DB connect
