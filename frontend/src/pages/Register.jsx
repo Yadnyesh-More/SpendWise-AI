@@ -19,10 +19,19 @@ function Register({ setUser }) {
   async function handleSubmit(e) {
     e.preventDefault();
     setError('');
+
+    if (form.password !== form.confirmPassword) {
+    setError('Passwords do not match');
+    return;
+  }
     setLoading(true);
 
     try {
-      const res = await api.post('/auth/register', form);
+      const res = await api.post('/auth/register', {
+      name: form.name,
+      email: form.email,
+      password: form.password,
+    });
       const { token, user } = res.data;
 
       localStorage.setItem('token', token);
