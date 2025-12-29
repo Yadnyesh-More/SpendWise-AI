@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const API_BASE_URL = 'https://spendwise-ai-9fd1.onrender.com/api';
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -19,7 +21,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-/* ---------- Handle auth errors ---------- */
+/* ---------- Handle 401 errors ---------- */
 api.interceptors.response.use(
   (response) => response,
   (error) => {
