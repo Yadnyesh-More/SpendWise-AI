@@ -1,21 +1,25 @@
 import axios from 'axios';
 
-// ✅ LIVE BACKEND URL (Render)
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  headers: { 'Content-Type': 'application/json' },
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
-// ✅ Auto-add JWT token to requests
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+/* ---------- Attach JWT automatically ---------- */
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-// ✅ Handle 401 errors (auto-logout)
+/* ---------- Handle auth errors ---------- */
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -29,4 +33,3 @@ api.interceptors.response.use(
 );
 
 export default api;
-  
