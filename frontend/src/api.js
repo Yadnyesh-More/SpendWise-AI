@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // ✅ LIVE BACKEND URL (Render)
 const api = axios.create({
-  baseURL: 'https://spendwise-ai-9fd1.onrender.com/api',
+  baseURL: import.meta.env.VITE_API_URL,
   headers: { 'Content-Type': 'application/json' },
 });
 
