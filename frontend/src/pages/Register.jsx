@@ -31,6 +31,7 @@ function Register({ setUser }) {
       name: form.name,
       email: form.email,
       password: form.password,
+      confirmPassword: form.confirmPassword 
     });
       const { token, user } = res.data;
 
