@@ -34,10 +34,13 @@ app.use(
   cors({
     origin: [
       'http://localhost:3000',
-      'https://spendwise-ai-frontend.vercel.app',
+      'http://localhost:5173',
+      'https://spendwise-ai-front.vercel.app',
+      'https://spend-wise-ai-front-yadnyesh-s-projects-b8cc2f46.vercel.app'
     ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
   })
 );
 
