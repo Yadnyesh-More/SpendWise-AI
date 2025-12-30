@@ -66,7 +66,7 @@ function Dashboard({ user }) {
       setTransactions(txRes.data.transactions || []);
 
       // DYNAMIC AI CALCULATIONS + Backend call
-      console.log('🔄 Calculating AI insights...');
+      //console.log('🔄 Calculating AI insights...');
       
       try {
         const aiRes = await api.post('/ai/budget-suggestion', {
@@ -75,7 +75,7 @@ function Dashboard({ user }) {
           month: selectedMonth,
         });
 
-        console.log('✅ Backend AI response:', aiRes.data);
+        //console.log('✅ Backend AI response:', aiRes.data);
 
         if (aiRes.data.success && aiRes.data.ai) {
           setAiSuggestion(aiRes.data.ai);
@@ -83,7 +83,7 @@ function Dashboard({ user }) {
           throw new Error('Invalid AI response');
         }
       } catch (aiErr) {
-        console.log('⚠️ Backend failed, using smart calculations');
+        //console.log('⚠️ Backend failed, using smart calculations');
         
         // DYNAMIC SMART CALCULATIONS
         const expenseRatio = s.income > 0 ? 
@@ -126,7 +126,7 @@ function Dashboard({ user }) {
 
       // ALWAYS SHOW AI (maximized)
       setShowAI(true);
-      console.log('✅ AI Advisor SHOWING with:', aiSuggestion);
+      //console.log('✅ AI Advisor SHOWING with:', aiSuggestion);
 
     } catch (err) {
       console.error('Dashboard error:', err);
@@ -136,7 +136,7 @@ function Dashboard({ user }) {
   };
 
   const handleTransactionAdded = () => {
-    console.log('🆕 Transaction added - refreshing AI...');
+    //console.log('🆕 Transaction added - refreshing AI...');
     setRefreshKey((prev) => prev + 1);
     loadMonths();
     // AI will auto-maximize in AIAdvisor useEffect

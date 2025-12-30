@@ -20,7 +20,7 @@
 // const simpleCache = async (req, res, next) => {
 //   // Skip cache if no Redis
 //   if (!USE_REDIS || !client) {
-//     console.log("📦 Cache disabled - using direct response");
+//     //console.log("📦 Cache disabled - using direct response");
 //     return next();
 //   }
 
@@ -30,11 +30,11 @@
 //     const cachedData = await client.get(key);
 
 //     if (cachedData) {
-//       console.log("✅ Cache HIT:", key);
+//       //console.log("✅ Cache HIT:", key);
 //       return res.json(JSON.parse(cachedData));
 //     }
 
-//     console.log("📦 Cache MISS:", key);
+//     //console.log("📦 Cache MISS:", key);
     
 //     const originalJson = res.json.bind(res);
 
@@ -54,7 +54,7 @@
 
 // ✅ NO REDIS - Production Ready (Render)
 const simpleCache = (req, res, next) => {
-  console.log("📦 Cache: SKIPPED (Redis disabled on Render)");
+  //console.log("📦 Cache: SKIPPED (Redis disabled on Render)");
   next(); // Direct response - FASTER!
 };
 

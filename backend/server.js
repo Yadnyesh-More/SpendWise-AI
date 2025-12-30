@@ -5,6 +5,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoSanitize from 'express-mongo-sanitize';
 import helmet from 'helmet';
+import fetch from 'node-fetch';
 
 // Local imports
 import connectDB from './src/config/db.js';
@@ -76,6 +77,14 @@ app.use('/api/auth', authRoutes);
 app.use('/api/transactions', authMiddleware, transactionRoutes);
 app.use('/api/admin', authMiddleware, adminRoutes);
 app.use('/api/ai', authMiddleware, aiRoutes);
+
+// Keep backend alive
+setInterval(() => {
+  try {
+    fetch('https://spendwise-ai-9fd1.onrender.com/api/health')
+      .catch(() => {}); // Silent fail
+  } catch (err) {}
+}, 4 * 60 * 1000); 
 
 // Health check
 app.get('/api/health', (req, res) => {

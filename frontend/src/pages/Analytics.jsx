@@ -59,7 +59,7 @@ function Analytics() {
   };
 
   // 🔹 Debug data (remove after testing)
-  console.log('🧁 Pie data:', data.categories);
+  //console.log('🧁 Pie data:', data.categories);
 
   return (
     <div className="min-h-screen bg-dark-primary">

@@ -38,11 +38,11 @@ function TransactionForm({ onTransactionAdded }) {
         date: new Date(date).toISOString(),  // ✅ Convert to ISO string
       };
 
-      console.log('📤 Sending payload:', payload);
+      //console.log('📤 Sending payload:', payload);
 
       const res = await api.post('/transactions', payload);
 
-      console.log('✅ Response:', res.data);
+      //console.log('✅ Response:', res.data);
 
       if (res.data?.success) {
         setSuccess('✅ Transaction added successfully!');

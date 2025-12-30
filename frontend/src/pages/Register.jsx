@@ -127,7 +127,7 @@ function Register({ setUser }) {
               />
             </div>
 
-            <button
+            {/* <button
               type="submit"
               disabled={loading}
               className={`w-full py-3 rounded-lg font-semibold transition ${
@@ -137,7 +137,25 @@ function Register({ setUser }) {
               }`}
             >
               {loading ? 'Registering...' : 'Register'}
-            </button>
+            </button> */}
+            <button
+  type="submit"
+  disabled={loading}
+  className={`w-full py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2 ${
+    loading
+      ? 'bg-[#2E3748] text-[#8B93A7] cursor-not-allowed'
+      : 'bg-[#5B8CFF] hover:bg-[#6FA8FF] text-[#0F1419]'
+  }`}
+>
+  {loading ? (
+    <>
+      <div className="w-4 h-4 border-2 border-[#8B93A7] border-t-[#5B8CFF] rounded-full animate-spin"></div>
+      Creating account...
+    </>
+  ) : (
+    'Register'
+  )}
+</button>
           </form>
 
           <p className="mt-6 text-center text-[#8B93A7]">
