@@ -18,6 +18,7 @@ function Dashboard({ user }) {
 
   const [aiSuggestion, setAiSuggestion] = useState(null);
   const [showAI, setShowAI] = useState(false);
+  const [hasNewAI, setHasNewAI] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -79,6 +80,7 @@ function Dashboard({ user }) {
 
         if (aiRes.data.success && aiRes.data.ai) {
           setAiSuggestion(aiRes.data.ai);
+          setHasNewAI(true);
         } else {
           throw new Error('Invalid AI response');
         }
@@ -122,10 +124,10 @@ function Dashboard({ user }) {
         };
 
         setAiSuggestion(aiData);
+        setHasNewAI(true);
       }
 
       // ALWAYS SHOW AI (maximized)
-      setShowAI(true);
       //console.log('✅ AI Advisor SHOWING with:', aiSuggestion);
 
     } catch (err) {
@@ -211,6 +213,20 @@ function Dashboard({ user }) {
                     })}`}
               </p>
             </div>
+            <div className="flex items-center gap-4">
+              {/* AI Advisor Badge */}
+              {hasNewAI && (
+                <button
+                  onClick={() => {
+                    setShowAI(true);
+                    setHasNewAI(false); // Remove badge when opened
+                  }}
+                  className="relative px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl"
+                >
+                  💡 AI Insights Available
+                  <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+                </button>
+              )}
 
             <select
               value={selectedMonth}
@@ -233,6 +249,7 @@ function Dashboard({ user }) {
                 </option>
               ))}
             </select>
+            </div>
           </div>
         </div>
       </div>
