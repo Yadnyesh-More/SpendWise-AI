@@ -28,10 +28,10 @@ function Register({ setUser }) {
 
     try {
       const res = await api.post('/auth/register', {
-      name: form.name,
-      email: form.email,
-      password: form.password,
-      confirmPassword: form.confirmPassword 
+      name: form.name || "",
+      email: form.email || "",
+      password: form.password || "",
+      confirmPassword: form.confirmPassword || "",
     });
       const { token, user } = res.data;
 
