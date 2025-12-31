@@ -252,38 +252,6 @@ function Dashboard({ user }) {
               </>
             )}
 
-            {/* MINI CARD - ONLY MAX BUTTON */}
-            <div className="relative bg-gradient-to-b from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-2 border-purple-500/40 rounded-3xl p-6 shadow-2xl hover:border-purple-500/60 hover:shadow-purple-500/20 transition-all cursor-pointer group">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3 flex-1">
-                  <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-xl border-2 border-white/20">
-                    <span className="text-2xl">🤖</span>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-black bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent group-hover:scale-105 transition-transform">Budget Coach</h3>
-                    <p className="text-blue-300 text-xs font-semibold mt-1">AI-Powered Insights</p>
-                  </div>
-                </div>
-                {/* ONLY ⬆ MAXIMIZE BUTTON */}
-                <button
-                  onClick={handleViewInsight}
-                  className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400 border-2 border-white/30 rounded-2xl flex items-center justify-center text-white font-black shadow-xl hover:shadow-blue-400/50 transition-all text-xl ml-2 group-hover:scale-110"
-                  title="Maximize"
-                >
-                  ⬆
-                </button>
-              </div>
-
-              <div className="h-px bg-gradient-to-r from-transparent via-purple-400/30 to-transparent my-4"></div>
-
-              <p className="text-white/90 text-sm leading-relaxed line-clamp-2 mb-4">
-                {aiSuggestion.suggestion}
-              </p>
-
-              <p className="text-xs text-purple-400/80 text-center font-medium">
-                🔄 Updates after every transaction
-              </p>
-            </div>
           </div>
         </div>
       )}
