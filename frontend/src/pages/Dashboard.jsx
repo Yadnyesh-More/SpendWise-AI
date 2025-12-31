@@ -17,7 +17,7 @@ function Dashboard({ user }) {
 
   const [aiSuggestion, setAiSuggestion] = useState(null);
   const [showAI, setShowAI] = useState(false);
-  const [coachGlow, setCoachGlow] = useState(false);
+  const [cardGlow, setCardGlow] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -101,9 +101,9 @@ function Dashboard({ user }) {
         });
       }
 
-      // SOFT GLOW on coach
-      setCoachGlow(true);
-      setTimeout(() => setCoachGlow(false), 3000);
+      // GLOW on card when new transaction
+      setCardGlow(true);
+      setTimeout(() => setCardGlow(false), 4000);
 
     } catch (err) {
       console.error('Dashboard error:', err);
@@ -150,7 +150,7 @@ function Dashboard({ user }) {
 
   return (
     <div className="min-h-screen bg-dark-primary">
-      {/* HEADER - CLEAN */}
+      {/* HEADER - CLEAN NO BADGES */}
       <div className="sticky top-16 z-30 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 backdrop-blur-xl border-b-2 border-white/20 shadow-xl">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
@@ -221,31 +221,100 @@ function Dashboard({ user }) {
         </div>
       </div>
 
-      {/* 🚀 MINIMIZED BUDGET COACH + SOFT THEME GLOW */}
-      <div className="fixed bottom-6 right-6 z-40 md:bottom-8 md:right-8 lg:bottom-12 lg:right-12">
+      {/* 🚀 MINIMIZED BUDGET COACH + AI CARD BELOW */}
+      <div className="fixed bottom-6 right-6 z-40 md:bottom-8 md:right-8 lg:bottom-12 lg:right-12 w-96 sm:w-80">
+        {/* AI ADVISOR CARD - LIKE YOUR PHOTO */}
+        {aiSuggestion && (
+          <div className="mb-6 group relative">
+            {/* GLOWING BORDER ANIMATION - ONLY when new transaction */}
+            {cardGlow && (
+              <>
+                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/50 via-blue-500/50 to-cyan-500/50 rounded-3xl blur-lg opacity-100 group-hover:opacity-100 transition-all duration-500 animate-pulse"></div>
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400/40 via-blue-400/40 to-cyan-400/40 rounded-3xl blur-md opacity-80 group-hover:opacity-100 transition-all duration-500"></div>
+              </>
+            )}
+
+            {/* CARD CONTENT */}
+            <div className="relative bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-2 border-cyan-500/30 rounded-3xl p-5 shadow-2xl backdrop-blur-xl">
+              {/* HEADER */}
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-start gap-3">
+                  {/* ROBOT ICON */}
+                  <div className="w-14 h-14 bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-xl shadow-lg flex-shrink-0">
+                    🤖
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-black text-white">Budget Coach</h3>
+                    <p className="text-cyan-300 text-xs font-semibold">AI-Powered Insights</p>
+                  </div>
+                </div>
+                {/* ACTION BUTTONS */}
+                <div className="flex gap-2">
+                  {/* MAXIMIZE BUTTON */}
+                  <button
+                    onClick={() => setShowAI(true)}
+                    className="w-9 h-9 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/40 border border-cyan-400/30 hover:border-cyan-400/60 flex items-center justify-center text-cyan-300 hover:text-cyan-200 transition-all font-bold text-sm"
+                    title="Maximize"
+                  >
+                    📤
+                  </button>
+                  {/* CLOSE BUTTON */}
+                  <button
+                    onClick={() => setAiSuggestion(null)}
+                    className="w-9 h-9 rounded-lg bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-lg"
+                    title="Close"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+
+              {/* DIVIDER */}
+              <div className="h-px bg-gradient-to-r from-cyan-500/0 via-cyan-500/20 to-cyan-500/0 mb-3"></div>
+
+              {/* SUGGESTION */}
+              <p className="text-white/90 text-sm leading-relaxed mb-3 line-clamp-2">
+                {aiSuggestion.suggestion}
+              </p>
+
+              {/* METRICS (optional - can be hidden on small) */}
+              {aiSuggestion.metrics && (
+                <div className="hidden sm:grid grid-cols-2 gap-2 mb-3">
+                  <div className="bg-cyan-500/10 border border-cyan-400/20 rounded-lg p-2">
+                    <p className="text-cyan-300 text-xs font-bold">Expense</p>
+                    <p className="text-cyan-100 text-sm font-black">{aiSuggestion.metrics.expenseRatio}</p>
+                  </div>
+                  <div className="bg-blue-500/10 border border-blue-400/20 rounded-lg p-2">
+                    <p className="text-blue-300 text-xs font-bold">Savings</p>
+                    <p className="text-blue-100 text-sm font-black">{aiSuggestion.metrics.savingsPercentage}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* COACH BUTTON ALWAYS BELOW CARD */}
         <div className="relative group">
-          {/* SOFT THEME GLOW - CYAN/BLUE matching website */}
-          {coachGlow && (
+          {/* SOFT GLOW WHEN CARD GLOWS */}
+          {cardGlow && (
             <>
-              <div className="absolute -inset-8 bg-gradient-to-r from-cyan-400/60 via-blue-500/70 to-cyan-400/60 rounded-3xl blur-2xl opacity-70 animate-pulse"></div>
-              <div className="absolute -inset-6 bg-gradient-to-r from-blue-500/50 via-cyan-500/60 to-blue-500/50 rounded-3xl blur-xl opacity-60 animate-pulse animation-delay-200"></div>
+              <div className="absolute -inset-8 bg-gradient-to-r from-cyan-400/50 via-blue-500/60 to-cyan-400/50 rounded-3xl blur-2xl opacity-70 animate-pulse"></div>
+              <div className="absolute -inset-6 bg-gradient-to-r from-blue-500/40 via-cyan-500/50 to-blue-500/40 rounded-3xl blur-xl opacity-60 animate-pulse"></div>
             </>
           )}
           
-          {/* MINIMIZED COACH BUTTON */}
+          {/* COACH BUTTON */}
           <button
-            onClick={() => setShowAI(true)}
-            className={`relative z-10 w-20 h-20 rounded-3xl shadow-2xl hover:shadow-3xl hover:scale-110 transform transition-all duration-300 flex items-center justify-center backdrop-blur-xl border-4 font-bold text-sm cursor-pointer
-              ${coachGlow 
-                ? 'bg-gradient-to-br from-cyan-600 via-blue-600 to-cyan-600 border-cyan-400/70 ring-4 ring-cyan-400/50 animate-pulse'
-                : 'bg-gradient-to-br from-purple-600 via-pink-600 to-purple-600 border-purple-500/50 hover:border-cyan-400/70 ring-2 ring-purple-500/30 hover:ring-cyan-400/50 hover:bg-gradient-to-br hover:from-cyan-600 hover:via-blue-600 hover:to-cyan-600'
+            className={`relative z-10 w-full py-4 rounded-3xl shadow-2xl hover:shadow-3xl hover:scale-105 transform transition-all duration-300 flex items-center justify-center gap-3 backdrop-blur-xl border-4 font-bold text-base cursor-pointer
+              ${cardGlow 
+                ? 'bg-gradient-to-br from-cyan-600 via-blue-600 to-cyan-600 border-cyan-400/70 ring-4 ring-cyan-400/50 text-white'
+                : 'bg-gradient-to-br from-purple-600 via-pink-600 to-purple-600 border-purple-500/50 hover:border-cyan-400/70 ring-2 ring-purple-500/30 hover:ring-cyan-400/50 hover:bg-gradient-to-br hover:from-cyan-600 hover:via-blue-600 hover:to-cyan-600 text-white'
               }`}
             title="Budget Coach"
           >
-            <div className="flex flex-col items-center gap-1">
-              <span className="text-2xl">🤖</span>
-              <span>Coach</span>
-            </div>
+            <span className="text-2xl">🤖</span>
+            <span>Coach</span>
           </button>
           
           {/* TOOLTIP */}
@@ -255,84 +324,14 @@ function Dashboard({ user }) {
         </div>
       </div>
 
-      {/* 🎯 AI ADVISOR - MINIMIZED DISPLAY (LIKE YOUR PHOTO) */}
-      {aiSuggestion && !showAI && (
-        <div className="fixed bottom-32 right-6 z-40 md:bottom-36 md:right-8 lg:bottom-40 lg:right-12 w-80 sm:w-96">
-          <div className="relative group">
-            {/* SOFT CYAN BORDER GLOW ANIMATION */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/40 via-blue-500/40 to-cyan-500/40 rounded-3xl blur-md opacity-0 group-hover:opacity-100 transition-all duration-500 animate-pulse"></div>
-            
-            {/* MAIN AI ADVISOR CARD */}
-            <div className="relative bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-2 border-cyan-500/30 rounded-3xl p-6 shadow-2xl backdrop-blur-xl">
-              {/* HEADER */}
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-start gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-2xl shadow-lg">
-                    🤖
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-black text-white">Budget Coach</h3>
-                    <p className="text-cyan-300 text-xs font-semibold">AI-Powered Insights</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setShowAI(true)}
-                  className="w-10 h-10 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/40 border border-cyan-400/30 hover:border-cyan-400/60 flex items-center justify-center text-cyan-300 hover:text-cyan-200 transition-all font-bold"
-                  title="Maximize"
-                >
-                  ⬆
-                </button>
-              </div>
-
-              {/* DIVIDER */}
-              <div className="h-px bg-gradient-to-r from-cyan-500/0 via-cyan-500/30 to-cyan-500/0 mb-4"></div>
-
-              {/* SUGGESTION */}
-              <p className="text-white text-sm leading-relaxed mb-4">
-                {aiSuggestion.suggestion}
-              </p>
-
-              {/* METRICS */}
-              {aiSuggestion.metrics && (
-                <div className="grid grid-cols-2 gap-3 mb-4">
-                  <div className="bg-cyan-500/10 border border-cyan-400/20 rounded-xl p-3">
-                    <p className="text-cyan-300 text-xs font-bold uppercase">Expense Ratio</p>
-                    <p className="text-cyan-100 text-lg font-black">{aiSuggestion.metrics.expenseRatio}</p>
-                  </div>
-                  <div className="bg-blue-500/10 border border-blue-400/20 rounded-xl p-3">
-                    <p className="text-blue-300 text-xs font-bold uppercase">Savings</p>
-                    <p className="text-blue-100 text-lg font-black">{aiSuggestion.metrics.savingsPercentage}</p>
-                  </div>
-                </div>
-              )}
-
-              {/* RECOMMENDATION */}
-              {aiSuggestion.recommendation && (
-                <div className="bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 rounded-2xl p-4">
-                  <p className="text-cyan-200 text-sm font-bold">{aiSuggestion.recommendation}</p>
-                </div>
-              )}
-
-              {/* CLOSE BUTTON */}
-              <button
-                onClick={() => setAiSuggestion(null)}
-                className="absolute top-4 right-4 w-8 h-8 rounded-lg bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-lg"
-              >
-                ✕
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* FULL SCREEN AI ADVISOR MODAL - MAXIMIZED */}
+      {/* FULL SCREEN AI MODAL - MAXIMIZED */}
       {showAI && aiSuggestion && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="relative w-full max-w-2xl max-h-96 overflow-auto">
-            {/* SOFT CYAN BORDER GLOW */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/50 via-blue-500/50 to-cyan-500/50 rounded-3xl blur-lg opacity-100 animate-pulse"></div>
+            {/* GLOWING BORDER */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/60 via-blue-500/60 to-cyan-500/60 rounded-3xl blur-lg opacity-100 animate-pulse"></div>
             
-            {/* MAIN MODAL */}
+            {/* MODAL CONTENT */}
             <div className="relative bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-2 border-cyan-500/50 rounded-3xl p-8 shadow-2xl backdrop-blur-xl">
               {/* HEADER */}
               <div className="flex items-start justify-between mb-6">
@@ -345,6 +344,7 @@ function Dashboard({ user }) {
                     <p className="text-cyan-300 text-sm font-semibold">AI-Powered Insights</p>
                   </div>
                 </div>
+                {/* CLOSE BUTTON */}
                 <button
                   onClick={() => setShowAI(false)}
                   className="w-12 h-12 rounded-xl bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-2xl"
