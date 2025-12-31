@@ -240,7 +240,7 @@ function Dashboard({ user }) {
         </div>
       </div>
 
-      {/* MINI AI ADVISOR - BOTTOM RIGHT (ONLY INSIGHT - NO BUTTONS) */}
+      {/* MINI AI ADVISOR - BOTTOM RIGHT (ONLY MAX BUTTON) */}
       {aiSuggestion && isMinimized && (
         <div className="fixed bottom-8 right-8 z-40 w-80">
           <div className="relative">
@@ -252,7 +252,7 @@ function Dashboard({ user }) {
               </>
             )}
 
-            {/* MINI CARD - NO BUTTONS */}
+            {/* MINI CARD - ONLY MAX BUTTON */}
             <div className="relative bg-gradient-to-b from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-2 border-purple-500/40 rounded-3xl p-6 shadow-2xl hover:border-purple-500/60 hover:shadow-purple-500/20 transition-all">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
@@ -264,6 +264,14 @@ function Dashboard({ user }) {
                     <p className="text-blue-300 text-xs font-semibold mt-1">AI-Powered Insights</p>
                   </div>
                 </div>
+                {/* ONLY MAX BUTTON */}
+                <button
+                  onClick={handleViewInsight}
+                  className="w-10 h-10 bg-blue-500/90 hover:bg-blue-400 rounded-full flex items-center justify-center text-white font-bold shadow-lg hover:shadow-blue-400/50 transition-all text-lg"
+                  title="Maximize"
+                >
+                  ⬆
+                </button>
               </div>
 
               <div className="h-px bg-gradient-to-r from-transparent via-purple-400/30 to-transparent my-4"></div>
@@ -280,13 +288,16 @@ function Dashboard({ user }) {
         </div>
       )}
 
-      {/* MAXIMIZED AI ADVISOR */}
+      {/* MAXIMIZED AI ADVISOR - MATCHING SCREENSHOT LAYOUT */}
       {showAI && aiSuggestion && !isMinimized && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-6">
-          <div className="w-full max-w-2xl max-h-[90vh] relative">
+          <div className="w-full max-w-4xl max-h-[90vh] relative">
+            {/* BACKGROUND GRADIENT */}
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-purple-500/20 rounded-3xl blur-xl"></div>
-            <div className="relative bg-gradient-to-br from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-4 border-purple-500/50 rounded-3xl p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
-              <div className="flex items-start justify-between mb-8">
+            
+            <div className="relative bg-gradient-to-br from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-4 border-purple-500/50 rounded-3xl p-12 shadow-2xl max-h-[90vh] overflow-y-auto">
+              {/* HEADER WITH BUTTONS */}
+              <div className="flex items-start justify-between mb-12">
                 <div className="flex items-center gap-4">
                   <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl border-3 border-white/30">
                     <span className="text-4xl">🤖</span>
@@ -317,31 +328,46 @@ function Dashboard({ user }) {
                 </div>
               </div>
 
-              <div className="space-y-8">
-                <p className="text-white text-xl leading-relaxed text-center mb-8">
+              {/* MAIN SUGGESTION */}
+              <div className="text-center mb-12">
+                <p className="text-white text-2xl leading-relaxed font-semibold max-w-2xl mx-auto">
                   {aiSuggestion.suggestion}
                 </p>
+              </div>
 
-                {aiSuggestion.metrics && (
-                  <div className="grid grid-cols-2 gap-6 mb-8">
-                    <div className="bg-gradient-to-br from-red-500/25 to-red-600/25 border-3 border-red-500/50 rounded-3xl p-8 text-center backdrop-blur-xl shadow-2xl">
-                      <p className="text-red-300 text-sm font-bold uppercase tracking-wider mb-3">Expense Ratio</p>
-                      <p className="text-red-100 text-5xl font-black">{aiSuggestion.metrics.expenseRatio}</p>
-                    </div>
-                    <div className="bg-gradient-to-br from-emerald-500/25 to-emerald-600/25 border-3 border-emerald-500/50 rounded-3xl p-8 text-center backdrop-blur-xl shadow-2xl">
-                      <p className="text-emerald-300 text-sm font-bold uppercase tracking-wider mb-3">Savings Rate</p>
-                      <p className="text-emerald-100 text-5xl font-black">{aiSuggestion.metrics.savingsPercentage}</p>
-                    </div>
+              {/* METRICS GRID - MATCHING SCREENSHOT */}
+              {aiSuggestion.metrics && (
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                  <div className="bg-gradient-to-br from-red-500/25 to-red-600/25 border-3 border-red-500/50 rounded-3xl p-8 text-center backdrop-blur-xl shadow-2xl group hover:scale-105 transition-all">
+                    <p className="text-red-300 text-sm font-bold uppercase tracking-wider mb-3">Expense Ratio</p>
+                    <p className="text-red-100 text-4xl lg:text-5xl font-black">{aiSuggestion.metrics.expenseRatio}</p>
                   </div>
-                )}
+                  <div className="bg-gradient-to-br from-emerald-500/25 to-emerald-600/25 border-3 border-emerald-500/50 rounded-3xl p-8 text-center backdrop-blur-xl shadow-2xl group hover:scale-105 transition-all">
+                    <p className="text-emerald-300 text-sm font-bold uppercase tracking-wider mb-3">Savings Rate</p>
+                    <p className="text-emerald-100 text-4xl lg:text-5xl font-black">{aiSuggestion.metrics.savingsPercentage}</p>
+                  </div>
+                  {/* EMPTY CARDS FOR LAYOUT MATCH */}
+                  <div className="bg-gradient-to-br from-slate-700/30 to-slate-800/30 border-2 border-slate-500/30 rounded-3xl p-8 backdrop-blur-xl shadow-xl"></div>
+                  <div className="bg-gradient-to-br from-slate-700/30 to-slate-800/30 border-2 border-slate-500/30 rounded-3xl p-8 backdrop-blur-xl shadow-xl"></div>
+                </div>
+              )}
 
-                {aiSuggestion.recommendation && (
-                  <div className="bg-gradient-to-r from-cyan-500/40 to-blue-500/40 border-3 border-cyan-500/60 rounded-3xl p-10 text-center backdrop-blur-xl shadow-2xl">
-                    <p className="text-cyan-100 text-2xl font-bold leading-relaxed bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+              {/* RECOMMENDATION BUTTON - MATCHING SCREENSHOT */}
+              {aiSuggestion.recommendation && (
+                <div className="text-center">
+                  <div className="inline-block bg-gradient-to-r from-cyan-500/40 to-blue-500/40 border-4 border-cyan-500/60 rounded-3xl p-12 backdrop-blur-xl shadow-2xl hover:scale-105 transition-all group max-w-md mx-auto">
+                    <p className="text-cyan-100 text-3xl font-bold leading-relaxed bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
                       {aiSuggestion.recommendation}
                     </p>
                   </div>
-                )}
+                </div>
+              )}
+
+              {/* FOOTER TEXT */}
+              <div className="mt-12 pt-8 border-t-2 border-purple-500/30 text-center">
+                <p className="text-xs text-purple-400/80 font-medium">
+                  🔄 Updates after every transaction
+                </p>
               </div>
             </div>
           </div>
