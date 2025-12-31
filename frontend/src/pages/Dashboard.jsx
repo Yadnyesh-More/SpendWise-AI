@@ -264,18 +264,6 @@ function Dashboard({ user }) {
             <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-pink-900/20 to-purple-900/30 rounded-3xl blur-3xl"></div>
             
             <div className="relative bg-gradient-to-br from-slate-900/98 to-slate-950/98 backdrop-blur-3xl border-4 border-purple-500/60 rounded-3xl p-12 shadow-2xl max-h-[95vh] overflow-y-auto">
-              {/* CENTERED HEADER - NO BUTTONS */}
-              <div className="flex items-center justify-center mb-16 text-center">
-                <div className="flex items-center gap-6">
-                  <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-600 rounded-3xl flex items-center justify-center shadow-2xl border-4 border-white/40">
-                    <span className="text-5xl">🤖</span>
-                  </div>
-                  <div>
-                    <h2 className="text-5xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-purple-500 bg-clip-text text-transparent drop-shadow-2xl">Budget Coach</h2>
-                    <p className="text-blue-300 text-xl font-semibold mt-3">AI-Powered Insights</p>
-                  </div>
-                </div>
-              </div>
 
               {/* MAIN SUGGESTION */}
               <div className="text-center mb-16">
