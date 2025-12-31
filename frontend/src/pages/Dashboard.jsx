@@ -240,7 +240,7 @@ function Dashboard({ user }) {
         </div>
       </div>
 
-      {/* MINI AI ADVISOR - BOTTOM RIGHT (LIKE IMAGE 2) */}
+      {/* MINI AI ADVISOR - BOTTOM RIGHT (ONLY INSIGHT - NO BUTTONS) */}
       {aiSuggestion && isMinimized && (
         <div className="fixed bottom-8 right-8 z-40 w-80">
           <div className="relative">
@@ -252,7 +252,7 @@ function Dashboard({ user }) {
               </>
             )}
 
-            {/* MINI CARD */}
+            {/* MINI CARD - NO BUTTONS */}
             <div className="relative bg-gradient-to-b from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-2 border-purple-500/40 rounded-3xl p-6 shadow-2xl hover:border-purple-500/60 hover:shadow-purple-500/20 transition-all">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
@@ -263,22 +263,6 @@ function Dashboard({ user }) {
                     <h3 className="text-xl font-black bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">Budget Coach</h3>
                     <p className="text-blue-300 text-xs font-semibold mt-1">AI-Powered Insights</p>
                   </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={handleViewInsight}
-                    className="w-10 h-10 bg-blue-500/90 hover:bg-blue-400 rounded-full flex items-center justify-center text-white font-bold shadow-lg hover:shadow-blue-400/50 transition-all text-lg"
-                    title="Maximize"
-                  >
-                    ⬆
-                  </button>
-                  <button
-                    onClick={() => setAiSuggestion(null)}
-                    className="w-10 h-10 bg-slate-700/60 hover:bg-slate-600 rounded-full flex items-center justify-center text-slate-300 hover:text-white font-bold shadow-md hover:shadow-slate-500/50 transition-all text-lg ml-1"
-                    title="Close"
-                  >
-                    ✕
-                  </button>
                 </div>
               </div>
 
