@@ -240,44 +240,42 @@ function Dashboard({ user }) {
         </div>
       </div>
 
-      {/* /* ================= MINI AI ADVISOR ================= */ }
+      {/* MINI AI ADVISOR - BOTTOM RIGHT LIKE IMAGE */}
       {aiSuggestion && isMinimized && (
-        <div className="fixed bottom-6 right-6 z-50 w-[360px]">
+        <div className="fixed bottom-8 right-8 z-40 w-80">
           <div className="relative">
-
+            {/* GLOW FOR 4 SECONDS AFTER TRANSACTION */}
             {hasNewSuggestion && (
-              <div className="absolute -inset-2 bg-gradient-to-r from-purple-500/40 to-pink-500/40 rounded-3xl blur-2xl animate-pulse" />
+              <>
+                <div className="absolute -inset-3 bg-gradient-to-r from-purple-400/40 via-pink-400/50 to-purple-400/40 rounded-3xl blur-2xl animate-ping"></div>
+                <div className="absolute -inset-1.5 bg-gradient-to-r from-purple-500/30 via-pink-500/40 to-purple-500/30 rounded-3xl blur-xl animate-pulse"></div>
+              </>
             )}
 
-            <div className="relative bg-[#0B1220]/95 backdrop-blur-xl border border-purple-500/40 rounded-3xl shadow-2xl">
-
-              {/* HEADER */}
-              <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+            {/* MINI CARD - EXACTLY LIKE IMAGE */}
+            <div className="relative bg-gradient-to-b from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-2 border-purple-500/40 rounded-3xl p-6 shadow-2xl hover:border-purple-500/60 hover:shadow-purple-500/20 transition-all">
+              {/* HEADER WITH BUTTONS LIKE IMAGE */}
+              <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
-                    🤖
+                  <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-xl border-2 border-white/20">
+                    <span className="text-2xl">🤖</span>
                   </div>
                   <div>
-                    <h4 className="text-white font-bold leading-tight">
-                      Budget Coach
-                    </h4>
-                    <p className="text-blue-300 text-xs font-medium">
-                      AI-Powered Insights
-                    </p>
+                    <h3 className="text-xl font-black bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">Budget Coach</h3>
+                    <p className="text-blue-300 text-xs font-semibold mt-1">AI-Powered Insights</p>
                   </div>
                 </div>
-
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleViewInsight}
-                    className="w-9 h-9 bg-blue-500 hover:bg-blue-400 rounded-full flex items-center justify-center text-white shadow-lg transition"
+                    className="w-10 h-10 bg-blue-500/90 hover:bg-blue-400 rounded-full flex items-center justify-center text-white font-bold shadow-lg hover:shadow-blue-400/50 transition-all text-lg"
                     title="Maximize"
                   >
                     ⬆
                   </button>
                   <button
                     onClick={() => setAiSuggestion(null)}
-                    className="w-9 h-9 bg-slate-700 hover:bg-slate-600 rounded-full flex items-center justify-center text-white transition"
+                    className="w-10 h-10 bg-slate-700/60 hover:bg-slate-600 rounded-full flex items-center justify-center text-slate-300 hover:text-white font-bold shadow-md hover:shadow-slate-500/50 transition-all text-lg ml-1"
                     title="Close"
                   >
                     ✕
@@ -285,51 +283,41 @@ function Dashboard({ user }) {
                 </div>
               </div>
 
-              {/* BODY */}
-              <div className="px-5 py-4">
-                <p className="text-white/90 text-sm leading-relaxed line-clamp-2">
-                  {aiSuggestion.suggestion}
-                </p>
+              <div className="h-px bg-gradient-to-r from-transparent via-purple-400/30 to-transparent my-4"></div>
 
-                <p className="mt-3 text-[11px] text-purple-400 text-center">
-                  ✨ Updates after every transaction
-                </p>
-              </div>
+              <p className="text-white/90 text-sm leading-relaxed line-clamp-2 mb-4">
+                {aiSuggestion.suggestion}
+              </p>
+
+              <p className="text-xs text-purple-400/80 text-center font-medium">
+                🔄 Updates after every transaction
+              </p>
             </div>
           </div>
         </div>
-        )
-      }
+      )}
 
-      {/* /* ================= MAXIMIZED AI ADVISOR ================= */}
+      {/* MAXIMIZED AI ADVISOR - LIKE IMAGE */}
       {showAI && aiSuggestion && !isMinimized && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center px-4">
-          <div className="relative w-full max-w-2xl">
-
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 to-pink-500/30 blur-2xl rounded-3xl" />
-
-            <div className="relative bg-[#0B1220]/95 border border-purple-500/50 rounded-3xl shadow-2xl overflow-hidden">
-
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-6">
+          <div className="w-full max-w-2xl max-h-[90vh] relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-purple-500/20 rounded-3xl blur-xl"></div>
+            <div className="relative bg-gradient-to-br from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-4 border-purple-500/50 rounded-3xl p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
               {/* HEADER */}
-              <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
+              <div className="flex items-start justify-between mb-8">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-xl">
-                    🤖
+                  <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl border-3 border-white/30">
+                    <span className="text-4xl">🤖</span>
                   </div>
                   <div>
-                    <h2 className="text-2xl font-black text-white">
-                      Budget Coach
-                    </h2>
-                    <p className="text-blue-300 text-sm font-semibold">
-                      AI-Powered Insights
-                    </p>
+                    <h2 className="text-4xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-purple-500 bg-clip-text text-transparent">Budget Coach</h2>
+                    <p className="text-blue-300 text-lg font-semibold mt-2">AI-Powered Insights</p>
                   </div>
                 </div>
-
-                <div className="flex gap-3">
+                <div className="flex items-center gap-2">
                   <button
                     onClick={handleMinimize}
-                    className="w-11 h-11 bg-blue-500 hover:bg-blue-400 rounded-xl flex items-center justify-center text-white text-xl shadow-lg"
+                    className="w-14 h-14 bg-blue-500/90 hover:bg-blue-400 rounded-2xl flex items-center justify-center text-white font-black shadow-xl hover:shadow-blue-400/50 transition-all text-2xl"
                     title="Minimize"
                   >
                     ⬇
@@ -339,7 +327,7 @@ function Dashboard({ user }) {
                       setAiSuggestion(null);
                       setShowAI(false);
                     }}
-                    className="w-11 h-11 bg-slate-700 hover:bg-slate-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg"
+                    className="w-14 h-14 bg-slate-700/70 hover:bg-slate-600 rounded-2xl flex items-center justify-center text-slate-300 hover:text-white font-black shadow-xl hover:shadow-slate-500/50 transition-all text-2xl"
                     title="Close"
                   >
                     ✕
@@ -348,37 +336,28 @@ function Dashboard({ user }) {
               </div>
 
               {/* CONTENT */}
-              <div className="p-8 space-y-8">
-                <p className="text-white text-lg leading-relaxed text-center">
+              <div className="space-y-8">
+                <p className="text-white text-xl leading-relaxed text-center mb-8">
                   {aiSuggestion.suggestion}
                 </p>
 
                 {aiSuggestion.metrics && (
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="bg-red-500/20 border border-red-400/40 rounded-2xl p-6 text-center">
-                      <p className="text-red-300 text-sm font-semibold">
-                        Expense Ratio
-                      </p>
-                      <p className="text-red-100 text-4xl font-black">
-                        {aiSuggestion.metrics.expenseRatio}
-                      </p>
+                  <div className="grid grid-cols-2 gap-6 mb-8">
+                    <div className="bg-gradient-to-br from-red-500/25 to-red-600/25 border-3 border-red-500/50 rounded-3xl p-8 text-center backdrop-blur-xl shadow-2xl">
+                      <p className="text-red-300 text-sm font-bold uppercase tracking-wider mb-3">Expense Ratio</p>
+                      <p className="text-red-100 text-5xl font-black">{aiSuggestion.metrics.expenseRatio}</p>
                     </div>
-
-                    <div className="bg-emerald-500/20 border border-emerald-400/40 rounded-2xl p-6 text-center">
-                      <p className="text-emerald-300 text-sm font-semibold">
-                        Savings Rate
-                      </p>
-                      <p className="text-emerald-100 text-4xl font-black">
-                        {aiSuggestion.metrics.savingsPercentage}
-                      </p>
+                    <div className="bg-gradient-to-br from-emerald-500/25 to-emerald-600/25 border-3 border-emerald-500/50 rounded-3xl p-8 text-center backdrop-blur-xl shadow-2xl">
+                      <p className="text-emerald-300 text-sm font-bold uppercase tracking-wider mb-3">Savings Rate</p>
+                      <p className="text-emerald-100 text-5xl font-black">{aiSuggestion.metrics.savingsPercentage}</p>
                     </div>
                   </div>
                 )}
 
                 {aiSuggestion.recommendation && (
-                  <div className="bg-gradient-to-r from-cyan-500/30 to-blue-500/30 border border-cyan-400/50 rounded-2xl p-6 text-center">
-                    <p className="text-cyan-100 text-xl font-bold">
-                      💡 {aiSuggestion.recommendation}
+                  <div className="bg-gradient-to-r from-cyan-500/40 to-blue-500/40 border-3 border-cyan-500/60 rounded-3xl p-10 text-center backdrop-blur-xl shadow-2xl">
+                    <p className="text-cyan-100 text-2xl font-bold leading-relaxed bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                      {aiSuggestion.recommendation}
                     </p>
                   </div>
                 )}
@@ -391,4 +370,4 @@ function Dashboard({ user }) {
   );
 }
 
-export default Dashboard;
+export default Dashboard; 
