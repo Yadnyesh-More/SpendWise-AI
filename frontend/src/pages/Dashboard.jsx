@@ -17,7 +17,8 @@ function Dashboard({ user }) {
 
   const [aiSuggestion, setAiSuggestion] = useState(null);
   const [showAI, setShowAI] = useState(false);
-  const [cardGlow, setCardGlow] = useState(false);
+  const [hasNewSuggestion, setHasNewSuggestion] = useState(false); // ✅ CONTINUOUS GLOW FLAG
+  const [isMinimized, setIsMinimized] = useState(true); // ✅ MINIMIZE/MAXIMIZE STATE
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   const [loading, setLoading] = useState(true);
@@ -67,13 +68,12 @@ function Dashboard({ user }) {
 
         if (aiRes.data.success && aiRes.data.ai) {
           setAiSuggestion(aiRes.data.ai);
+          setHasNewSuggestion(true); // ✅ SET GLOW FLAG
           
           if (isFirstLoad) {
             setShowAI(true);
+            setIsMinimized(false); // ✅ OPEN ON FIRST LOAD
             setIsFirstLoad(false);
-          } else {
-            // CONTINUOUS GLOW on new transaction
-            setCardGlow(true);
           }
         }
       } catch (aiErr) {
@@ -108,12 +108,12 @@ function Dashboard({ user }) {
           recommendation
         });
 
+        setHasNewSuggestion(true); // ✅ SET GLOW FLAG
+        
         if (isFirstLoad) {
           setShowAI(true);
+          setIsMinimized(false); // ✅ OPEN ON FIRST LOAD
           setIsFirstLoad(false);
-        } else {
-          // CONTINUOUS GLOW on new transaction
-          setCardGlow(true);
         }
       }
 
@@ -127,6 +127,13 @@ function Dashboard({ user }) {
   const handleTransactionAdded = () => {
     setRefreshKey((prev) => prev + 1);
     loadMonths();
+  };
+
+  // ✅ CLEAR GLOW WHEN USER VIEWS THE INSIGHT
+  const handleViewInsight = () => {
+    setShowAI(true);
+    setIsMinimized(false);
+    setHasNewSuggestion(false); // ✅ CLEAR GLOW
   };
 
   if (loading && months.length === 0) {
@@ -162,7 +169,7 @@ function Dashboard({ user }) {
 
   return (
     <div className="min-h-screen bg-dark-primary">
-      {/* HEADER - CLEAN */}
+      {/* HEADER - COMPLETELY CLEAN - ONLY TITLE + MONTH SELECTOR */}
       <div className="sticky top-16 z-30 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 backdrop-blur-xl border-b-2 border-white/20 shadow-xl">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
@@ -233,22 +240,22 @@ function Dashboard({ user }) {
         </div>
       </div>
 
-      {/* ✅ MINIMIZED AI CARD WITH MAXIMIZE BUTTON + CONTINUOUS GLOW */}
-      {aiSuggestion && !showAI && (
+      {/* ✅ MINIMIZED AI CARD - BOTTOM RIGHT WITH GLOW UNTIL VIEWED */}
+      {aiSuggestion && isMinimized && (
         <div className="fixed bottom-6 right-6 z-40 md:bottom-8 md:right-8 lg:bottom-12 lg:right-12 w-96 sm:w-80">
           <div className="group relative">
-            {/* CONTINUOUS GLOW - ALWAYS VISIBLE WHEN NEW TRANSACTION */}
-            {cardGlow && (
+            {/* ✅ CONTINUOUS GLOW UNTIL USER VIEWS */}
+            {hasNewSuggestion && (
               <>
-                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/60 via-blue-500/60 to-cyan-500/60 rounded-3xl blur-lg opacity-100 animate-pulse"></div>
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400/50 via-blue-400/50 to-cyan-400/50 rounded-3xl blur-md opacity-90 group-hover:opacity-100 transition-all"></div>
+                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/50 via-blue-500/50 to-cyan-500/50 rounded-3xl blur-lg opacity-100 animate-pulse"></div>
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400/40 via-blue-400/40 to-cyan-400/40 rounded-3xl blur-md opacity-80"></div>
               </>
             )}
 
             {/* CARD */}
             <div className="relative bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-2 border-cyan-500/30 rounded-3xl p-5 shadow-2xl backdrop-blur-xl hover:border-cyan-500/50 transition-all">
               {/* HEADER */}
-              <div className="flex items-start justify-between mb-3">
+              <div className="flex items-start justify-between">
                 <div className="flex items-start gap-3">
                   <div className="w-14 h-14 bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-xl shadow-lg flex-shrink-0">
                     🤖
@@ -258,53 +265,45 @@ function Dashboard({ user }) {
                     <p className="text-cyan-300 text-xs font-semibold">AI-Powered Insights</p>
                   </div>
                 </div>
-
-                {/* ACTION BUTTONS - MAXIMIZE + CLOSE */}
-                <div className="flex gap-2 flex-shrink-0">
-                  {/* MAXIMIZE BUTTON */}
-                  <button
-                    onClick={() => setShowAI(true)}
-                    className="w-9 h-9 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/40 border border-cyan-400/30 hover:border-cyan-400/60 flex items-center justify-center text-cyan-300 hover:text-cyan-200 transition-all font-bold text-lg"
-                    title="Maximize"
-                  >
-                    📤
-                  </button>
-                  {/* CLOSE BUTTON */}
-                  <button
-                    onClick={() => {
-                      setAiSuggestion(null);
-                      setCardGlow(false);
-                    }}
-                    className="w-9 h-9 rounded-lg bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-lg"
-                    title="Close"
-                  >
-                    ✕
-                  </button>
-                </div>
               </div>
 
               {/* DIVIDER */}
-              <div className="h-px bg-gradient-to-r from-cyan-500/0 via-cyan-500/20 to-cyan-500/0 mb-3"></div>
+              <div className="h-px bg-gradient-to-r from-cyan-500/0 via-cyan-500/20 to-cyan-500/0 my-3"></div>
 
               {/* SUGGESTION */}
-              <p className="text-white/90 text-sm leading-relaxed line-clamp-2">
+              <p className="text-white/90 text-sm leading-relaxed line-clamp-2 mb-4">
                 {aiSuggestion.suggestion}
               </p>
+
+              {/* ✅ BUTTON ROW - MAXIMIZE + CLOSE */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleViewInsight}
+                  className="flex-1 px-3 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold rounded-lg text-sm transition-all flex items-center justify-center gap-2"
+                  title="Maximize"
+                >
+                  📤 Expand
+                </button>
+                <button
+                  onClick={() => setAiSuggestion(null)}
+                  className="w-10 h-10 rounded-lg bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-lg flex-shrink-0"
+                  title="Close"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* FULL SCREEN MODAL - MAXIMIZE */}
-      {showAI && aiSuggestion && (
+      {/* ✅ FULL SCREEN MODAL - WHEN MAXIMIZED */}
+      {showAI && aiSuggestion && !isMinimized && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="relative w-full max-w-2xl max-h-96 overflow-auto">
-            {/* GLOWING BORDER */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/60 via-blue-500/60 to-cyan-500/60 rounded-3xl blur-lg opacity-100 animate-pulse"></div>
+            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/60 via-blue-500/60 to-cyan-500/60 rounded-3xl blur-lg opacity-100"></div>
             
-            {/* MODAL CONTENT */}
             <div className="relative bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-2 border-cyan-500/50 rounded-3xl p-8 shadow-2xl backdrop-blur-xl">
-              {/* HEADER */}
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-start gap-4">
                   <div className="w-20 h-20 bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-4xl shadow-lg">
@@ -316,40 +315,25 @@ function Dashboard({ user }) {
                   </div>
                 </div>
 
-                {/* ACTION BUTTONS - MINIMIZE + CLOSE */}
-                <div className="flex gap-2 flex-shrink-0">
-                  {/* MINIMIZE BUTTON */}
-                  <button
-                    onClick={() => setShowAI(false)}
-                    className="w-12 h-12 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/40 border border-cyan-400/30 hover:border-cyan-400/60 flex items-center justify-center text-cyan-300 hover:text-cyan-200 transition-all font-bold text-xl"
-                    title="Minimize"
-                  >
-                    📥
-                  </button>
-                  {/* CLOSE BUTTON */}
-                  <button
-                    onClick={() => {
-                      setShowAI(false);
-                      setAiSuggestion(null);
-                      setCardGlow(false);
-                    }}
-                    className="w-12 h-12 rounded-xl bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-2xl"
-                    title="Close"
-                  >
-                    ✕
-                  </button>
-                </div>
+                {/* ✅ MINIMIZE BUTTON */}
+                <button
+                  onClick={() => {
+                    setShowAI(false);
+                    setIsMinimized(true);
+                  }}
+                  className="w-12 h-12 rounded-xl bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-2xl flex-shrink-0"
+                  title="Minimize"
+                >
+                  📥
+                </button>
               </div>
 
-              {/* DIVIDER */}
               <div className="h-px bg-gradient-to-r from-cyan-500/0 via-cyan-500/50 to-cyan-500/0 mb-6"></div>
 
-              {/* SUGGESTION */}
               <p className="text-white text-lg leading-relaxed mb-6">
                 {aiSuggestion.suggestion}
               </p>
 
-              {/* METRICS */}
               {aiSuggestion.metrics && (
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="bg-cyan-500/20 border border-cyan-400/40 rounded-2xl p-4">
@@ -363,7 +347,6 @@ function Dashboard({ user }) {
                 </div>
               )}
 
-              {/* RECOMMENDATION */}
               {aiSuggestion.recommendation && (
                 <div className="bg-gradient-to-r from-cyan-500/30 to-blue-500/30 border border-cyan-400/50 rounded-2xl p-6">
                   <p className="text-cyan-100 text-lg font-bold">{aiSuggestion.recommendation}</p>
@@ -373,22 +356,6 @@ function Dashboard({ user }) {
           </div>
         </div>
       )}
-
-      {/* ADD CUSTOM CSS FOR CONTINUOUS GLOW */}
-      <style>{`
-        @keyframes continuous-pulse {
-          0%, 100% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0.7;
-          }
-        }
-        
-        .animate-pulse {
-          animation: continuous-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-      `}</style>
     </div>
   );
 }
