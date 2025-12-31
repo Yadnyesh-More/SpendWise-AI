@@ -243,7 +243,7 @@ function Dashboard({ user }) {
       {/* MINI AI ADVISOR - BOTTOM RIGHT (ONLY ⬆ MAX BUTTON) - UNCHANGED */}
       {aiSuggestion && isMinimized && (
         <div className="fixed bottom-8 right-8 z-40 w-80">
-          <div className="relative">
+          <div className="relative cursor-pointer" onClick={handleViewInsight}>
             {/* GLOW EFFECT */}
             {hasNewSuggestion && (
               <>
@@ -252,7 +252,7 @@ function Dashboard({ user }) {
               </>
             )}
 
-            <div className="relative bg-gradient-to-b from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-2 border-purple-500/40 rounded-3xl p-6 shadow-2xl hover:border-purple-500/60 hover:shadow-purple-500/20 transition-all cursor-pointer onClick={handleViewInsight}">
+            <div className="relative bg-gradient-to-b from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-2 border-purple-500/40 rounded-3xl p-6 shadow-2xl hover:border-purple-500/60 hover:shadow-purple-500/20 transition-all ">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-xl border-2 border-white/20">
