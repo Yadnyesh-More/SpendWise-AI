@@ -15,7 +15,7 @@ function Navbar({ user, onLogout }) {
               <span className="text-2xl">💰</span>
             </div>
             <div>
-              <h1 className="text-2xl font-black text-brand-primary">ExpenseAI</h1>
+              <h1 className="text-2xl font-black text-brand-primary">SpendWise AI</h1>
               <p className="text-text-muted text-xs font-semibold">Smart Budget</p>
             </div>
           </Link>

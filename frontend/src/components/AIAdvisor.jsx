@@ -47,7 +47,7 @@ function AIAdvisor({ suggestion, onDismiss }) {
                 <h3 className="font-black text-xl bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent drop-shadow-lg">
                   Budget Coach
                 </h3>
-                <p className="text-gray-300 text-xs font-semibold tracking-wide">AI-Powered Insights</p>
+                <p className="text-gray-300 text-xs font-semibold tracking-wide">Spend-Ai Insights</p>
               </div>
             </div>
             
