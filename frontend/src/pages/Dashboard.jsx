@@ -255,7 +255,7 @@ function Dashboard({ user }) {
             {/* MINI CARD - ONLY MAX BUTTON */}
             <div className="relative bg-gradient-to-b from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-2 border-purple-500/40 rounded-3xl p-6 shadow-2xl hover:border-purple-500/60 hover:shadow-purple-500/20 transition-all">
               <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 flex-1">
                   <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-xl border-2 border-white/20">
                     <span className="text-2xl">🤖</span>
                   </div>
@@ -267,7 +267,7 @@ function Dashboard({ user }) {
                 {/* ONLY MAX BUTTON */}
                 <button
                   onClick={handleViewInsight}
-                  className="w-10 h-10 bg-blue-500/90 hover:bg-blue-400 rounded-full flex items-center justify-center text-white font-bold shadow-lg hover:shadow-blue-400/50 transition-all text-lg"
+                  className="w-10 h-10 bg-blue-500/90 hover:bg-blue-400 rounded-full flex items-center justify-center text-white font-bold shadow-lg hover:shadow-blue-400/50 transition-all text-lg ml-2"
                   title="Maximize"
                 >
                   ⬆
@@ -288,7 +288,7 @@ function Dashboard({ user }) {
         </div>
       )}
 
-      {/* MAXIMIZED AI ADVISOR - MATCHING SCREENSHOT LAYOUT */}
+      {/* MAXIMIZED AI ADVISOR - NO HEADER BUTTONS */}
       {showAI && aiSuggestion && !isMinimized && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-6">
           <div className="w-full max-w-4xl max-h-[90vh] relative">
@@ -296,8 +296,8 @@ function Dashboard({ user }) {
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-purple-500/20 rounded-3xl blur-xl"></div>
             
             <div className="relative bg-gradient-to-br from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-4 border-purple-500/50 rounded-3xl p-12 shadow-2xl max-h-[90vh] overflow-y-auto">
-              {/* HEADER WITH BUTTONS */}
-              <div className="flex items-start justify-between mb-12">
+              {/* HEADER - NO BUTTONS */}
+              <div className="flex items-center justify-center mb-12 text-center">
                 <div className="flex items-center gap-4">
                   <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl border-3 border-white/30">
                     <span className="text-4xl">🤖</span>
@@ -306,25 +306,6 @@ function Dashboard({ user }) {
                     <h2 className="text-4xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-purple-500 bg-clip-text text-transparent">Budget Coach</h2>
                     <p className="text-blue-300 text-lg font-semibold mt-2">AI-Powered Insights</p>
                   </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={handleMinimize}
-                    className="w-14 h-14 bg-blue-500/90 hover:bg-blue-400 rounded-2xl flex items-center justify-center text-white font-black shadow-xl hover:shadow-blue-400/50 transition-all text-2xl"
-                    title="Minimize"
-                  >
-                    ⬇
-                  </button>
-                  <button
-                    onClick={() => {
-                      setAiSuggestion(null);
-                      setShowAI(false);
-                    }}
-                    className="w-14 h-14 bg-slate-700/70 hover:bg-slate-600 rounded-2xl flex items-center justify-center text-slate-300 hover:text-white font-black shadow-xl hover:shadow-slate-500/50 transition-all text-2xl"
-                    title="Close"
-                  >
-                    ✕
-                  </button>
                 </div>
               </div>
 
