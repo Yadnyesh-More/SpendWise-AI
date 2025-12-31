@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { formatCurrency } from '../utils';
 import TransactionForm from '../components/TransactionForm';
 import TransactionList from '../components/TransactionList';
-import AIAdvisor from '../components/AIAdvisor.jsx';
 import LoadingSpinner from '../components/LoadingSpinner';
 import api from '../api';
 
@@ -16,9 +15,7 @@ function Dashboard({ user }) {
   const [months, setMonths] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState('all');
 
-  const [aiSuggestion, setAiSuggestion] = useState(null);
-  const [showAI, setShowAI] = useState(false);
-  const [coachGlow, setCoachGlow] = useState(false); // Red beam glow
+  const [coachGlow, setCoachGlow] = useState(false); // Red beam glow only
 
   const [loading, setLoading] = useState(true);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -58,51 +55,7 @@ function Dashboard({ user }) {
       setSummary(s);
       setTransactions(txRes.data.transactions || []);
 
-      // AI CALCULATIONS
-      try {
-        const aiRes = await api.post('/ai/budget-suggestion', {
-          income: s.income,
-          expense: s.expense,
-          month: selectedMonth,
-        });
-
-        if (aiRes.data.success && aiRes.data.ai) {
-          setAiSuggestion(aiRes.data.ai);
-        }
-      } catch (aiErr) {
-        const expenseRatio = s.income > 0 ? 
-          ((s.expense / s.income) * 100).toFixed(0) + '%' : '0%';
-        const savingsRate = s.income > 0 ? 
-          (100 - parseFloat(expenseRatio)).toFixed(0) + '%' : '0%';
-        
-        let suggestionText, recommendation;
-        const expensePercent = parseFloat(expenseRatio);
-        
-        if (expensePercent === 0) {
-          suggestionText = "No transactions yet!";
-          recommendation = "Start tracking your finances";
-        } else if (expensePercent < 50) {
-          suggestionText = "🎉 Excellent spending habits!";
-          recommendation = "Invest 30% 🚀";
-        } else if (expensePercent < 70) {
-          suggestionText = "💪 Great discipline!";
-          recommendation = "Invest 20% 📈";
-        } else if (expensePercent < 90) {
-          suggestionText = "👌 Good job!";
-          recommendation = "Build emergency fund 🛡️";
-        } else {
-          suggestionText = "⚠️ High spending!";
-          recommendation = "Cut subscriptions ✂️";
-        }
-
-        setAiSuggestion({
-          suggestion: suggestionText,
-          metrics: { expenseRatio, savingsPercentage: savingsRate },
-          recommendation
-        });
-      }
-
-      // RED BEAM GLOW on new data
+      // TRIGGER RED BEAM GLOW on new data
       setCoachGlow(true);
       setTimeout(() => setCoachGlow(false), 4000);
 
@@ -151,7 +104,7 @@ function Dashboard({ user }) {
 
   return (
     <div className="min-h-screen bg-dark-primary">
-      {/* HEADER - COMPLETELY CLEAN - NO BADGES */}
+      {/* HEADER - COMPLETELY CLEAN */}
       <div className="sticky top-16 z-30 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 backdrop-blur-xl border-b-2 border-white/20 shadow-xl">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
@@ -222,7 +175,7 @@ function Dashboard({ user }) {
         </div>
       </div>
 
-      {/* 🚀 MINIMIZED BUDGET COACH + RED BEAM */}
+      {/* 🚀 MINIMIZED BUDGET COACH + RED BEAM GLOW */}
       <div className="fixed bottom-6 right-6 z-50 md:bottom-8 md:right-8 lg:bottom-12 lg:right-12">
         <div className="relative group">
           {/* RED BEAM GLOW - ONLY on new transactions */}
@@ -236,8 +189,7 @@ function Dashboard({ user }) {
           
           {/* MINIMIZED COACH BUTTON - ALWAYS VISIBLE */}
           <button
-            onClick={() => setShowAI(true)}
-            className={`relative z-10 w-20 h-20 rounded-3xl shadow-2xl hover:shadow-3xl hover:scale-110 transform transition-all duration-300 flex items-center justify-center backdrop-blur-xl border-4 font-bold text-sm
+            className={`relative z-10 w-20 h-20 rounded-3xl shadow-2xl hover:shadow-3xl hover:scale-110 transform transition-all duration-300 flex items-center justify-center backdrop-blur-xl border-4 font-bold text-sm cursor-pointer
               ${coachGlow 
                 ? 'bg-gradient-to-br from-red-600 via-rose-600 to-pink-600 border-red-500/70 ring-4 ring-red-400/60 animate-pulse'
                 : 'bg-gradient-to-br from-purple-600 via-pink-600 to-purple-600 border-purple-500/50 hover:border-purple-400/70 ring-2 ring-purple-500/30 hover:ring-purple-400/50'
@@ -256,11 +208,6 @@ function Dashboard({ user }) {
           </div>
         </div>
       </div>
-
-      {/* AI ADVISOR - MAXIMIZED ONLY WHEN CLICKED */}
-      {showAI && aiSuggestion && (
-        <AIAdvisor suggestion={aiSuggestion} onDismiss={() => setShowAI(false)} />
-      )}
     </div>
   );
 }
