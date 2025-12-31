@@ -171,7 +171,7 @@ function Dashboard({ user }) {
 
   return (
     <div className="min-h-screen bg-dark-primary">
-      {/* CLEAN HEADER - NO AI BUTTON (LIKE IMAGE 2) */}
+      {/* CLEAN HEADER - NO BUTTONS */}
       <div className="sticky top-16 z-30 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 backdrop-blur-xl border-b-2 border-white/20 shadow-xl">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
@@ -252,7 +252,7 @@ function Dashboard({ user }) {
               </>
             )}
 
-            {/* MINI CARD - EXACTLY LIKE IMAGE 2 */}
+            {/* MINI CARD */}
             <div className="relative bg-gradient-to-b from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-2 border-purple-500/40 rounded-3xl p-6 shadow-2xl hover:border-purple-500/60 hover:shadow-purple-500/20 transition-all">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
