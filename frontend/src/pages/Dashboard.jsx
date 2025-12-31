@@ -280,7 +280,7 @@ function Dashboard({ user }) {
       {/* MAXIMIZED AI ADVISOR - COMPACT RIGHT SIDE - UNCHANGED */}
       {showAI && aiSuggestion && !isMinimized && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-end p-8 pr-4">
-          <div className="w-full max-w-md relative ml-auto" onClick={handleViewInsight}>
+          <div className="w-full max-w-md relative ml-auto" onClick={handleMinimize}>
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 via-pink-500/20 to-purple-500/30 rounded-2xl blur-xl"></div>
             <div className="relative bg-gradient-to-br from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-3 border-purple-500/50 rounded-2xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
               
