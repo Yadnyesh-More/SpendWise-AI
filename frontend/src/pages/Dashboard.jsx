@@ -18,7 +18,7 @@ function Dashboard({ user }) {
   const [aiSuggestion, setAiSuggestion] = useState(null);
   const [showAI, setShowAI] = useState(false);
   const [cardGlow, setCardGlow] = useState(false);
-  const [isFirstLoad, setIsFirstLoad] = useState(true); // Track if first time
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   const [loading, setLoading] = useState(true);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -58,7 +58,6 @@ function Dashboard({ user }) {
       setSummary(s);
       setTransactions(txRes.data.transactions || []);
 
-      // AI CALCULATIONS
       try {
         const aiRes = await api.post('/ai/budget-suggestion', {
           income: s.income,
@@ -69,12 +68,10 @@ function Dashboard({ user }) {
         if (aiRes.data.success && aiRes.data.ai) {
           setAiSuggestion(aiRes.data.ai);
           
-          // FIRST TIME ONLY - AUTO MAXIMIZE
           if (isFirstLoad) {
             setShowAI(true);
             setIsFirstLoad(false);
           } else {
-            // SUBSEQUENT TIMES - JUST GLOW
             setCardGlow(true);
             setTimeout(() => setCardGlow(false), 4000);
           }
@@ -111,12 +108,10 @@ function Dashboard({ user }) {
           recommendation
         });
 
-        // FIRST TIME ONLY - AUTO MAXIMIZE
         if (isFirstLoad) {
           setShowAI(true);
           setIsFirstLoad(false);
         } else {
-          // SUBSEQUENT TIMES - JUST GLOW
           setCardGlow(true);
           setTimeout(() => setCardGlow(false), 4000);
         }
@@ -167,7 +162,7 @@ function Dashboard({ user }) {
 
   return (
     <div className="min-h-screen bg-dark-primary">
-      {/* HEADER - CLEAN */}
+      {/* HEADER - COMPLETELY CLEAN - ONLY TITLE + MONTH SELECTOR */}
       <div className="sticky top-16 z-30 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 backdrop-blur-xl border-b-2 border-white/20 shadow-xl">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
@@ -238,25 +233,24 @@ function Dashboard({ user }) {
         </div>
       </div>
 
-      {/* 🎯 MINIMIZED AI ADVISOR CARD ONLY - ALWAYS VISIBLE */}
+      {/* ✅ MINIMIZED AI CARD ONLY (BOTTOM RIGHT) - NO OTHER BUTTONS */}
       {aiSuggestion && !showAI && (
         <div className="fixed bottom-6 right-6 z-40 md:bottom-8 md:right-8 lg:bottom-12 lg:right-12 w-96 sm:w-80">
           <div className="group relative">
-            {/* GLOWING BORDER ANIMATION - ONLY when new transaction */}
+            {/* GLOW ONLY ON NEW TRANSACTION */}
             {cardGlow && (
               <>
-                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/50 via-blue-500/50 to-cyan-500/50 rounded-3xl blur-lg opacity-100 group-hover:opacity-100 transition-all duration-500 animate-pulse"></div>
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400/40 via-blue-400/40 to-cyan-400/40 rounded-3xl blur-md opacity-80 group-hover:opacity-100 transition-all duration-500"></div>
+                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/50 via-blue-500/50 to-cyan-500/50 rounded-3xl blur-lg opacity-100 animate-pulse"></div>
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400/40 via-blue-400/40 to-cyan-400/40 rounded-3xl blur-md opacity-80"></div>
               </>
             )}
 
-            {/* CARD CONTENT - LIKE YOUR PHOTO */}
+            {/* CARD - CLICKABLE */}
             <div className="relative bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-2 border-cyan-500/30 rounded-3xl p-5 shadow-2xl backdrop-blur-xl cursor-pointer hover:border-cyan-500/50 transition-all"
               onClick={() => setShowAI(true)}>
               {/* HEADER */}
-              <div className="flex items-start justify-between mb-3">
+              <div className="flex items-start justify-between">
                 <div className="flex items-start gap-3">
-                  {/* ROBOT ICON */}
                   <div className="w-14 h-14 bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-xl shadow-lg flex-shrink-0">
                     🤖
                   </div>
@@ -265,35 +259,21 @@ function Dashboard({ user }) {
                     <p className="text-cyan-300 text-xs font-semibold">AI-Powered Insights</p>
                   </div>
                 </div>
-                {/* ACTION BUTTONS */}
-                <div className="flex gap-2">
-                  {/* MAXIMIZE BUTTON */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setShowAI(true);
-                    }}
-                    className="w-9 h-9 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/40 border border-cyan-400/30 hover:border-cyan-400/60 flex items-center justify-center text-cyan-300 hover:text-cyan-200 transition-all font-bold text-sm"
-                    title="Maximize"
-                  >
-                    📤
-                  </button>
-                  {/* CLOSE BUTTON */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setAiSuggestion(null);
-                    }}
-                    className="w-9 h-9 rounded-lg bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-lg"
-                    title="Close"
-                  >
-                    ✕
-                  </button>
-                </div>
+                {/* ONLY CLOSE BUTTON */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setAiSuggestion(null);
+                  }}
+                  className="w-8 h-8 rounded-lg bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-lg flex-shrink-0"
+                  title="Close"
+                >
+                  ✕
+                </button>
               </div>
 
               {/* DIVIDER */}
-              <div className="h-px bg-gradient-to-r from-cyan-500/0 via-cyan-500/20 to-cyan-500/0 mb-3"></div>
+              <div className="h-px bg-gradient-to-r from-cyan-500/0 via-cyan-500/20 to-cyan-500/0 my-3"></div>
 
               {/* SUGGESTION */}
               <p className="text-white/90 text-sm leading-relaxed line-clamp-2">
@@ -304,16 +284,13 @@ function Dashboard({ user }) {
         </div>
       )}
 
-      {/* FULL SCREEN AI MODAL - AUTO MAXIMIZE FIRST TIME */}
+      {/* FULL SCREEN MODAL - AUTO MAXIMIZE FIRST TIME ONLY */}
       {showAI && aiSuggestion && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="relative w-full max-w-2xl max-h-96 overflow-auto">
-            {/* GLOWING BORDER */}
             <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/60 via-blue-500/60 to-cyan-500/60 rounded-3xl blur-lg opacity-100 animate-pulse"></div>
             
-            {/* MODAL CONTENT */}
             <div className="relative bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-2 border-cyan-500/50 rounded-3xl p-8 shadow-2xl backdrop-blur-xl">
-              {/* HEADER */}
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-start gap-4">
                   <div className="w-20 h-20 bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-4xl shadow-lg">
@@ -324,24 +301,20 @@ function Dashboard({ user }) {
                     <p className="text-cyan-300 text-sm font-semibold">AI-Powered Insights</p>
                   </div>
                 </div>
-                {/* CLOSE BUTTON */}
                 <button
                   onClick={() => setShowAI(false)}
-                  className="w-12 h-12 rounded-xl bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-2xl"
+                  className="w-12 h-12 rounded-xl bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-2xl flex-shrink-0"
                 >
                   ✕
                 </button>
               </div>
 
-              {/* DIVIDER */}
               <div className="h-px bg-gradient-to-r from-cyan-500/0 via-cyan-500/50 to-cyan-500/0 mb-6"></div>
 
-              {/* SUGGESTION */}
               <p className="text-white text-lg leading-relaxed mb-6">
                 {aiSuggestion.suggestion}
               </p>
 
-              {/* METRICS */}
               {aiSuggestion.metrics && (
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="bg-cyan-500/20 border border-cyan-400/40 rounded-2xl p-4">
@@ -355,7 +328,6 @@ function Dashboard({ user }) {
                 </div>
               )}
 
-              {/* RECOMMENDATION */}
               {aiSuggestion.recommendation && (
                 <div className="bg-gradient-to-r from-cyan-500/30 to-blue-500/30 border border-cyan-400/50 rounded-2xl p-6">
                   <p className="text-cyan-100 text-lg font-bold">{aiSuggestion.recommendation}</p>
