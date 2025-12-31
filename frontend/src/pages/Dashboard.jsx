@@ -67,8 +67,6 @@ function Dashboard({ user }) {
       setTransactions(txRes.data.transactions || []);
 
       // DYNAMIC AI CALCULATIONS + Backend call
-      //console.log('🔄 Calculating AI insights...');
-      
       try {
         const aiRes = await api.post('/ai/budget-suggestion', {
           income: s.income,
@@ -76,42 +74,39 @@ function Dashboard({ user }) {
           month: selectedMonth,
         });
 
-        //console.log('✅ Backend AI response:', aiRes.data);
-
         if (aiRes.data.success && aiRes.data.ai) {
           setAiSuggestion(aiRes.data.ai);
-          setHasNewAI(true);
+          if (!showAI) { // Only if AI is currently closed
+            setHasNewAI(true);
+          }
         } else {
           throw new Error('Invalid AI response');
         }
       } catch (aiErr) {
-        //console.log('⚠️ Backend failed, using smart calculations');
-        
-        // DYNAMIC SMART CALCULATIONS
+        // FALLBACK SMART CALCULATIONS
         const expenseRatio = s.income > 0 ? 
           ((s.expense / s.income) * 100).toFixed(0) + '%' : '0%';
         const savingsRate = s.income > 0 ? 
           (100 - parseFloat(expenseRatio)).toFixed(0) + '%' : '0%';
         
         let suggestionText, recommendation;
-        
         const expensePercent = parseFloat(expenseRatio);
         
         if (expensePercent === 0) {
-          suggestionText = "No transactions yet! Add your first income/expense to get personalized advice.";
+          suggestionText = "No transactions yet! Add your first income/expense.";
           recommendation = "Start tracking your finances";
         } else if (expensePercent < 50) {
-          suggestionText = "🎉 Excellent! You're spending way below average. You're building serious wealth!";
+          suggestionText = "🎉 Excellent! You're spending way below average!";
           recommendation = "Invest 30% in index funds 🚀";
         } else if (expensePercent < 70) {
-          suggestionText = "💪 Great financial discipline! You're saving more than most people.";
+          suggestionText = "💪 Great financial discipline!";
           recommendation = "Invest 20% in mutual funds 📈";
         } else if (expensePercent < 90) {
-          suggestionText = "👌 Good job! Room to optimize spending habits for better savings.";
+          suggestionText = "👌 Good job! Room to optimize.";
           recommendation = "Build 3-month emergency fund 🛡️";
         } else {
-          suggestionText = "⚠️ High spending detected. Review discretionary expenses to boost savings.";
-          recommendation = "Cut dining out & subscriptions first ✂️";
+          suggestionText = "⚠️ High spending detected.";
+          recommendation = "Cut dining out & subscriptions ✂️";
         }
 
         const aiData = {
@@ -124,12 +119,10 @@ function Dashboard({ user }) {
         };
 
         setAiSuggestion(aiData);
-        setHasNewAI(true);
+        if (!showAI) { // Only if AI is currently closed
+          setHasNewAI(true);
+        }
       }
-
-      // ALWAYS SHOW AI (maximized)
-      //console.log('✅ AI Advisor SHOWING with:', aiSuggestion);
-
     } catch (err) {
       console.error('Dashboard error:', err);
     } finally {
@@ -138,10 +131,8 @@ function Dashboard({ user }) {
   };
 
   const handleTransactionAdded = () => {
-    //console.log('🆕 Transaction added - refreshing AI...');
     setRefreshKey((prev) => prev + 1);
     loadMonths();
-    // AI will auto-maximize in AIAdvisor useEffect
   };
 
   if (loading && months.length === 0) {
@@ -194,7 +185,7 @@ function Dashboard({ user }) {
 
   return (
     <div className="min-h-screen bg-dark-primary">
-      {/* Header */}
+      {/* Header - CLEAN (NO BADGE) */}
       <div className="sticky top-16 z-30 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 backdrop-blur-xl border-b-2 border-white/20 shadow-xl">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
@@ -213,21 +204,6 @@ function Dashboard({ user }) {
                     })}`}
               </p>
             </div>
-            <div className="flex items-center gap-4">
-              {/* AI Advisor Badge */}
-              {hasNewAI && (
-                <button
-                  onClick={() => {
-                    setShowAI(true);
-                    setHasNewAI(false); // Remove badge when opened
-                  }}
-                  className="relative px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl"
-                >
-                  💡 AI Insights Available
-                  <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
-                </button>
-              )}
-
             <select
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
@@ -249,7 +225,6 @@ function Dashboard({ user }) {
                 </option>
               ))}
             </select>
-            </div>
           </div>
         </div>
       </div>
@@ -318,7 +293,48 @@ function Dashboard({ user }) {
         </div>
       </div>
 
-      {/* AI ADVISOR OVERLAY - AUTO-MAXIMIZES AFTER TRANSACTIONS */}
+      {/* 🚀 RED BEAM BUDGET COACH - BOTTOM RIGHT */}
+      {hasNewAI && (
+        <div className="fixed bottom-8 right-8 z-40 md:bottom-12 md:right-12">
+          <div className="relative group">
+            {/* GLOWING OUTER RING */}
+            <div className="absolute -inset-6 bg-gradient-to-r from-red-400/70 via-rose-500/70 to-pink-500/70 rounded-3xl blur-3xl opacity-60 animate-pulse group-hover:opacity-90"></div>
+            
+            {/* PINGING MIDDLE RING */}
+            <div className="absolute -inset-4 bg-gradient-to-r from-red-500/60 via-rose-600/60 to-red-500/60 rounded-3xl blur-xl opacity-50 animate-ping group-hover:animate-none"></div>
+            
+            {/* MAIN BUTTON */}
+            <button
+              onClick={() => {
+                setShowAI(true);
+                setHasNewAI(false);
+              }}
+              className="relative z-10 px-8 py-5 bg-gradient-to-br from-red-600 via-rose-600 to-pink-600 
+                         hover:from-red-700 hover:via-rose-700 hover:to-pink-700 
+                         text-white font-black text-lg rounded-3xl shadow-2xl hover:shadow-3xl 
+                         hover:scale-105 hover:rotate-3 transform transition-all duration-300
+                         border-4 border-red-500/60 ring-4 ring-red-400/40 backdrop-blur-xl"
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-2xl animate-bounce">💡</span>
+                <span>Budget Coach</span>
+                <span className="w-3 h-3 bg-white rounded-full animate-ping ml-auto"></span>
+              </div>
+            </button>
+            
+            {/* TOOLTIP */}
+            <div className="absolute -top-14 left-1/2 transform -translate-x-1/2 
+                            bg-red-600/95 backdrop-blur-md text-white px-4 py-2 rounded-2xl 
+                            text-sm font-bold opacity-0 group-hover:opacity-100 
+                            transition-all duration-300 whitespace-nowrap shadow-2xl 
+                            border border-red-400/50">
+              New money tips! 💰
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* AI ADVISOR OVERLAY */}
       {showAI && aiSuggestion && (
         <AIAdvisor
           suggestion={aiSuggestion}
