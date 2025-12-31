@@ -171,7 +171,7 @@ function Dashboard({ user }) {
 
   return (
     <div className="min-h-screen bg-dark-primary">
-      {/* CLEAN HEADER - NO BUTTONS */}
+      {/* CLEAN HEADER - REMOVED "AI INSIGHTS AVAILABLE" BUTTON [file:8] */}
       <div className="sticky top-16 z-30 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 backdrop-blur-xl border-b-2 border-white/20 shadow-xl">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
@@ -240,7 +240,7 @@ function Dashboard({ user }) {
         </div>
       </div>
 
-      {/* MINI AI ADVISOR - BOTTOM RIGHT (ONLY ⬆ MAX BUTTON) */}
+      {/* MINI AI ADVISOR - BOTTOM RIGHT (ONLY ⬆ MAX BUTTON) - UNCHANGED */}
       {aiSuggestion && isMinimized && (
         <div className="fixed bottom-8 right-8 z-40 w-80">
           <div className="relative">
@@ -281,7 +281,7 @@ function Dashboard({ user }) {
         </div>
       )}
 
-      {/* MAXIMIZED AI ADVISOR - COMPACT RIGHT SIDE LIKE IMG 2 [file:7] */}
+      {/* MAXIMIZED AI ADVISOR - COMPACT RIGHT SIDE - UNCHANGED */}
       {showAI && aiSuggestion && !isMinimized && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-end p-8 pr-4">
           <div className="w-full max-w-md relative ml-auto">
