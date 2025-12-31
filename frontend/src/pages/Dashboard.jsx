@@ -18,7 +18,8 @@ function Dashboard({ user }) {
 
   const [aiSuggestion, setAiSuggestion] = useState(null);
   const [showAI, setShowAI] = useState(false);
-  const [hasNewAI, setHasNewAI] = useState(false);
+  const [budgetCoachGlow, setBudgetCoachGlow] = useState(false); // Glow state
+  const [isFirstTransaction, setIsFirstTransaction] = useState(true); // Track first transaction
 
   const [loading, setLoading] = useState(true);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -31,7 +32,6 @@ function Dashboard({ user }) {
   // Load dashboard when month changes or refreshKey increments
   useEffect(() => {
     loadDashboard();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMonth, refreshKey]);
 
   const loadMonths = async () => {
@@ -66,7 +66,13 @@ function Dashboard({ user }) {
       setSummary(s);
       setTransactions(txRes.data.transactions || []);
 
-      // DYNAMIC AI CALCULATIONS + Backend call
+      // Check if this is first transaction ever
+      const hasTransactions = (txRes.data.transactions || []).length > 0;
+      if (hasTransactions && isFirstTransaction) {
+        setIsFirstTransaction(false);
+      }
+
+      // AI CALCULATIONS
       try {
         const aiRes = await api.post('/ai/budget-suggestion', {
           income: s.income,
@@ -76,11 +82,16 @@ function Dashboard({ user }) {
 
         if (aiRes.data.success && aiRes.data.ai) {
           setAiSuggestion(aiRes.data.ai);
-          if (!showAI) { // Only if AI is currently closed
-            setHasNewAI(true);
+          
+          // FIRST TRANSACTION → AUTO MAXIMIZE
+          if (isFirstTransaction && hasTransactions) {
+            setShowAI(true);
+            setIsFirstTransaction(false);
+          } else {
+            // REGULAR → Just glow the coach
+            setBudgetCoachGlow(true);
+            setTimeout(() => setBudgetCoachGlow(false), 3000);
           }
-        } else {
-          throw new Error('Invalid AI response');
         }
       } catch (aiErr) {
         // FALLBACK SMART CALCULATIONS
@@ -96,7 +107,7 @@ function Dashboard({ user }) {
           suggestionText = "No transactions yet! Add your first income/expense.";
           recommendation = "Start tracking your finances";
         } else if (expensePercent < 50) {
-          suggestionText = "🎉 Excellent! You're spending way below average!";
+          suggestionText = "🎉 Excellent spending habits!";
           recommendation = "Invest 30% in index funds 🚀";
         } else if (expensePercent < 70) {
           suggestionText = "💪 Great financial discipline!";
@@ -111,16 +122,20 @@ function Dashboard({ user }) {
 
         const aiData = {
           suggestion: suggestionText,
-          metrics: {
-            expenseRatio,
-            savingsPercentage: savingsRate
-          },
+          metrics: { expenseRatio, savingsPercentage: savingsRate },
           recommendation
         };
 
         setAiSuggestion(aiData);
-        if (!showAI) { // Only if AI is currently closed
-          setHasNewAI(true);
+        
+        // FIRST TRANSACTION → AUTO MAXIMIZE
+        if (isFirstTransaction && hasTransactions) {
+          setShowAI(true);
+          setIsFirstTransaction(false);
+        } else {
+          // REGULAR → Just glow the coach
+          setBudgetCoachGlow(true);
+          setTimeout(() => setBudgetCoachGlow(false), 3000);
         }
       }
     } catch (err) {
@@ -185,7 +200,7 @@ function Dashboard({ user }) {
 
   return (
     <div className="min-h-screen bg-dark-primary">
-      {/* Header - CLEAN (NO BADGE) */}
+      {/* Header - CLEAN NO BADGE */}
       <div className="sticky top-16 z-30 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 backdrop-blur-xl border-b-2 border-white/20 shadow-xl">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
@@ -293,48 +308,44 @@ function Dashboard({ user }) {
         </div>
       </div>
 
-      {/* 🚀 RED BEAM BUDGET COACH - BOTTOM RIGHT */}
-      {hasNewAI && (
-        <div className="fixed bottom-8 right-8 z-40 md:bottom-12 md:right-12">
-          <div className="relative group">
-            {/* GLOWING OUTER RING */}
-            <div className="absolute -inset-6 bg-gradient-to-r from-red-400/70 via-rose-500/70 to-pink-500/70 rounded-3xl blur-3xl opacity-60 animate-pulse group-hover:opacity-90"></div>
-            
-            {/* PINGING MIDDLE RING */}
-            <div className="absolute -inset-4 bg-gradient-to-r from-red-500/60 via-rose-600/60 to-red-500/60 rounded-3xl blur-xl opacity-50 animate-ping group-hover:animate-none"></div>
-            
-            {/* MAIN BUTTON */}
-            <button
-              onClick={() => {
-                setShowAI(true);
-                setHasNewAI(false);
-              }}
-              className="relative z-10 px-8 py-5 bg-gradient-to-br from-red-600 via-rose-600 to-pink-600 
-                         hover:from-red-700 hover:via-rose-700 hover:to-pink-700 
-                         text-white font-black text-lg rounded-3xl shadow-2xl hover:shadow-3xl 
-                         hover:scale-105 hover:rotate-3 transform transition-all duration-300
-                         border-4 border-red-500/60 ring-4 ring-red-400/40 backdrop-blur-xl"
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-2xl animate-bounce">💡</span>
-                <span>Budget Coach</span>
-                <span className="w-3 h-3 bg-white rounded-full animate-ping ml-auto"></span>
-              </div>
-            </button>
-            
-            {/* TOOLTIP */}
-            <div className="absolute -top-14 left-1/2 transform -translate-x-1/2 
-                            bg-red-600/95 backdrop-blur-md text-white px-4 py-2 rounded-2xl 
-                            text-sm font-bold opacity-0 group-hover:opacity-100 
-                            transition-all duration-300 whitespace-nowrap shadow-2xl 
-                            border border-red-400/50">
-              New money tips! 💰
-            </div>
+      {/* 🚀 MINIMIZED BUDGET COACH - ALWAYS VISIBLE BOTTOM RIGHT */}
+      <div className="fixed bottom-6 right-6 z-40 md:bottom-8 md:right-8 lg:bottom-12 lg:right-12">
+        <div className="relative group">
+          {/* GLOW EFFECT - ONLY WHEN NEW TRANSACTION */}
+          {budgetCoachGlow && (
+            <>
+              <div className="absolute -inset-8 bg-gradient-to-r from-red-400/80 via-rose-500/80 to-pink-500/80 rounded-3xl blur-3xl opacity-90 animate-ping"></div>
+              <div className="absolute -inset-6 bg-gradient-to-r from-orange-400/70 via-red-500/70 to-orange-400/70 rounded-3xl blur-2xl opacity-80 animate-pulse"></div>
+            </>
+          )}
+          
+          {/* MAIN MINIMIZED COACH BUTTON */}
+          <button
+            onClick={() => setShowAI(true)}
+            className={`relative z-10 w-16 h-16 rounded-3xl shadow-2xl hover:shadow-3xl 
+                       hover:scale-110 transform transition-all duration-300 flex items-center justify-center
+                       backdrop-blur-xl border-4 ${
+                         budgetCoachGlow
+                           ? 'bg-gradient-to-br from-red-600 via-rose-600 to-pink-600 border-red-500/70 ring-4 ring-red-400/50 animate-pulse'
+                           : 'bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 border-gray-600/50 hover:border-blue-500/50 hover:bg-gradient-to-br from-blue-600 via-cyan-600 to-blue-600 ring-2 ring-blue-500/30'
+                       }`}
+            title="Budget Coach"
+          >
+            <span className="text-xl">💡</span>
+          </button>
+          
+          {/* TOOLTIP */}
+          <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 
+                          bg-gray-900/95 backdrop-blur-md text-white px-3 py-1.5 rounded-xl 
+                          text-xs font-bold opacity-0 group-hover:opacity-100 
+                          transition-all duration-300 whitespace-nowrap shadow-2xl 
+                          border border-gray-700/50 pointer-events-none">
+            Budget Coach
           </div>
         </div>
-      )}
+      </div>
 
-      {/* AI ADVISOR OVERLAY */}
+      {/* AI ADVISOR OVERLAY - MAXIMIZED */}
       {showAI && aiSuggestion && (
         <AIAdvisor
           suggestion={aiSuggestion}
