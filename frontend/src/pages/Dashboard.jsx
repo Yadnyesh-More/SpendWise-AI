@@ -17,9 +17,8 @@ function Dashboard({ user }) {
 
   const [aiSuggestion, setAiSuggestion] = useState(null);
   const [showAI, setShowAI] = useState(false);
-  const [hasNewSuggestion, setHasNewSuggestion] = useState(false); // ✅ CONTINUOUS GLOW FLAG
-  const [isMinimized, setIsMinimized] = useState(true); // ✅ MINIMIZE/MAXIMIZE STATE
-  const [isFirstLoad, setIsFirstLoad] = useState(true);
+  const [hasNewAI, setHasNewAI] = useState(false); // ✅ From your reference code
+  const [isMinimized, setIsMinimized] = useState(true);
 
   const [loading, setLoading] = useState(true);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -68,12 +67,8 @@ function Dashboard({ user }) {
 
         if (aiRes.data.success && aiRes.data.ai) {
           setAiSuggestion(aiRes.data.ai);
-          setHasNewSuggestion(true); // ✅ SET GLOW FLAG
-          
-          if (isFirstLoad) {
-            setShowAI(true);
-            setIsMinimized(false);
-            setIsFirstLoad(false);
+          if (!showAI) { // ✅ From your reference code
+            setHasNewAI(true);
           }
         }
       } catch (aiErr) {
@@ -108,12 +103,8 @@ function Dashboard({ user }) {
           recommendation
         });
 
-        setHasNewSuggestion(true); // ✅ SET GLOW FLAG
-        
-        if (isFirstLoad) {
-          setShowAI(true);
-          setIsMinimized(false);
-          setIsFirstLoad(false);
+        if (!showAI) { // ✅ From your reference code
+          setHasNewAI(true);
         }
       }
 
@@ -129,11 +120,15 @@ function Dashboard({ user }) {
     loadMonths();
   };
 
-  // ✅ CLEAR GLOW WHEN USER VIEWS THE INSIGHT
   const handleViewInsight = () => {
     setShowAI(true);
     setIsMinimized(false);
-    setHasNewSuggestion(false); // ✅ CLEAR GLOW
+    setHasNewAI(false);
+  };
+
+  const handleMinimize = () => {
+    setShowAI(false);
+    setIsMinimized(true);
   };
 
   if (loading && months.length === 0) {
@@ -169,7 +164,7 @@ function Dashboard({ user }) {
 
   return (
     <div className="min-h-screen bg-dark-primary">
-      {/* HEADER */}
+      {/* HEADER - SAME AS YOUR REFERENCE CODE */}
       <div className="sticky top-16 z-30 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 backdrop-blur-xl border-b-2 border-white/20 shadow-xl">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
@@ -181,18 +176,30 @@ function Dashboard({ user }) {
                   : `📅 ${new Date(selectedMonth + '-01').toLocaleString('default', { month: 'long', year: 'numeric' })}`}
               </p>
             </div>
-            <select
-              value={selectedMonth}
-              onChange={(e) => setSelectedMonth(e.target.value)}
-              className="px-6 py-3 bg-white/20 border-2 border-white text-white rounded-xl font-bold focus:ring-2 focus:ring-white/50 cursor-pointer backdrop-blur-sm hover:bg-white/30 transition-all"
-            >
-              <option value="all" style={{ backgroundColor: '#191F2B', color: '#E6EAF2' }}>📊 All Time</option>
-              {months.map((month) => (
-                <option key={month} value={month} style={{ backgroundColor: '#191F2B', color: '#E6AF2' }}>
-                  {new Date(month + '-01').toLocaleString('default', { month: 'long', year: 'numeric' })}
-                </option>
-              ))}
-            </select>
+            <div className="flex items-center gap-4">
+              {/* ✅ AI BADGE FROM YOUR REFERENCE CODE */}
+              {hasNewAI && (
+                <button
+                  onClick={handleViewInsight}
+                  className="relative px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl"
+                >
+                  💡 AI Insights Available
+                  <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+                </button>
+              )}
+              <select
+                value={selectedMonth}
+                onChange={(e) => setSelectedMonth(e.target.value)}
+                className="px-6 py-3 bg-white/20 border-2 border-white text-white rounded-xl font-bold focus:ring-2 focus:ring-white/50 cursor-pointer backdrop-blur-sm hover:bg-white/30 transition-all"
+              >
+                <option value="all" style={{ backgroundColor: '#191F2B', color: '#E6EAF2' }}>📊 All Time</option>
+                {months.map((month) => (
+                  <option key={month} value={month} style={{ backgroundColor: '#191F2B', color: '#E6AF2' }}>
+                    {new Date(month + '-01').toLocaleString('default', { month: 'long', year: 'numeric' })}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -240,21 +247,15 @@ function Dashboard({ user }) {
         </div>
       </div>
 
-      {/* ✅ MINIMIZED AI CARD - BOTTOM RIGHT WITH GLOW */}
-      {aiSuggestion && isMinimized && (
+      {/* ✅ MINIMIZED AI CARD - BOTTOM RIGHT */}
+      {aiSuggestion && isMinimized && hasNewAI && (
         <div className="fixed bottom-6 right-6 z-40 md:bottom-8 md:right-8 lg:bottom-12 lg:right-12 w-96 sm:w-80">
           <div className="group relative">
-            {/* ✅ CONTINUOUS GLOW UNTIL USER VIEWS */}
-            {hasNewSuggestion && (
-              <>
-                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/50 via-blue-500/50 to-cyan-500/50 rounded-3xl blur-lg opacity-100 animate-pulse"></div>
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400/40 via-blue-400/40 to-cyan-400/40 rounded-3xl blur-md opacity-80"></div>
-              </>
-            )}
+            {/* GLOW EFFECT */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/50 via-blue-500/50 to-cyan-500/50 rounded-3xl blur-lg opacity-100 animate-pulse"></div>
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400/40 via-blue-400/40 to-cyan-400/40 rounded-3xl blur-md opacity-80"></div>
 
-            {/* CARD */}
             <div className="relative bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-2 border-cyan-500/30 rounded-3xl p-5 shadow-2xl backdrop-blur-xl hover:border-cyan-500/50 transition-all">
-              {/* HEADER */}
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-3">
                   <div className="w-14 h-14 bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-xl shadow-lg flex-shrink-0">
@@ -267,27 +268,22 @@ function Dashboard({ user }) {
                 </div>
               </div>
 
-              {/* DIVIDER */}
               <div className="h-px bg-gradient-to-r from-cyan-500/0 via-cyan-500/20 to-cyan-500/0 my-3"></div>
 
-              {/* SUGGESTION */}
               <p className="text-white/90 text-sm leading-relaxed line-clamp-2 mb-4">
                 {aiSuggestion.suggestion}
               </p>
 
-              {/* ✅ BUTTON ROW */}
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleViewInsight}
                   className="flex-1 px-3 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold rounded-lg text-sm transition-all flex items-center justify-center gap-2"
-                  title="Maximize"
                 >
                   📤 Expand
                 </button>
                 <button
-                  onClick={() => setAiSuggestion(null)}
-                  className="w-10 h-10 rounded-lg bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-lg flex-shrink-0"
-                  title="Close"
+                  onClick={() => setHasNewAI(false)}
+                  className="w-10 h-10 rounded-lg bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-lg"
                 >
                   ✕
                 </button>
@@ -297,14 +293,14 @@ function Dashboard({ user }) {
         </div>
       )}
 
-      {/* ✅ MAXIMIZED AI MODAL - NEW STRUCTURE */}
+      {/* ✅ MAXIMIZED AI MODAL - YOUR REFERENCE CODE STRUCTURE */}
       {showAI && aiSuggestion && !isMinimized && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="relative w-full max-w-2xl max-h-[90vh]">
             <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/60 via-blue-500/60 to-cyan-500/60 rounded-3xl blur-lg opacity-100"></div>
             
             <div className="relative bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-2 border-cyan-500/50 rounded-3xl shadow-2xl backdrop-blur-xl overflow-hidden">
-              {/* ✅ HEADER WITH RIGHT-SIDE BUTTONS */}
+              {/* HEADER BAR - SAME AS AIADVISOR */}
               <div className="bg-gradient-to-r from-slate-700/50 to-slate-800/50 border-b border-cyan-500/20 p-6 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-2xl shadow-lg flex-shrink-0">
@@ -316,30 +312,21 @@ function Dashboard({ user }) {
                   </div>
                 </div>
                 
-                {/* ✅ RIGHT SIDE BUTTONS */}
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => {
-                      setShowAI(false);
-                      setIsMinimized(true);
-                    }}
-                    className="w-12 h-12 rounded-xl bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-xl flex-shrink-0"
-                    title="Minimize"
-                  >
-                    📥
-                  </button>
-                </div>
+                <button
+                  onClick={handleMinimize}
+                  className="w-12 h-12 rounded-xl bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-xl flex-shrink-0"
+                >
+                  📥
+                </button>
               </div>
 
               <div className="p-8 max-h-[calc(90vh-120px)] overflow-y-auto">
-                {/* ✅ MAIN SUGGESTION */}
                 <div className="mb-8">
                   <p className="text-white text-lg leading-relaxed bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 rounded-2xl p-6 backdrop-blur-sm">
                     {aiSuggestion.suggestion}
                   </p>
                 </div>
 
-                {/* ✅ METRICS CARDS */}
                 {aiSuggestion.metrics && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                     <div className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 border border-cyan-400/40 rounded-2xl p-6 text-center">
@@ -353,7 +340,6 @@ function Dashboard({ user }) {
                   </div>
                 )}
 
-                {/* ✅ RECOMMENDATION BUTTON */}
                 {aiSuggestion.recommendation && (
                   <div className="bg-gradient-to-r from-cyan-500/30 via-blue-500/30 to-cyan-500/30 border-2 border-cyan-400/50 rounded-2xl p-8 text-center backdrop-blur-sm hover:border-cyan-500/70 transition-all hover:scale-[1.02]">
                     <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl text-2xl">
