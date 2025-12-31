@@ -17,8 +17,8 @@ function Dashboard({ user }) {
 
   const [aiSuggestion, setAiSuggestion] = useState(null);
   const [showAI, setShowAI] = useState(false);
-  const [hasNewSuggestion, setHasNewSuggestion] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(true);
+  const [hasNewSuggestion, setHasNewSuggestion] = useState(false); // ✅ CONTINUOUS GLOW FLAG
+  const [isMinimized, setIsMinimized] = useState(true); // ✅ MINIMIZE/MAXIMIZE STATE
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   const [loading, setLoading] = useState(true);
@@ -68,11 +68,11 @@ function Dashboard({ user }) {
 
         if (aiRes.data.success && aiRes.data.ai) {
           setAiSuggestion(aiRes.data.ai);
-          setHasNewSuggestion(true);
+          setHasNewSuggestion(true); // ✅ SET GLOW FLAG
           
           if (isFirstLoad) {
             setShowAI(true);
-            setIsMinimized(false);
+            setIsMinimized(false); // ✅ OPEN ON FIRST LOAD
             setIsFirstLoad(false);
           }
         }
@@ -108,11 +108,11 @@ function Dashboard({ user }) {
           recommendation
         });
 
-        setHasNewSuggestion(true);
+        setHasNewSuggestion(true); // ✅ SET GLOW FLAG
         
         if (isFirstLoad) {
           setShowAI(true);
-          setIsMinimized(false);
+          setIsMinimized(false); // ✅ OPEN ON FIRST LOAD
           setIsFirstLoad(false);
         }
       }
@@ -129,10 +129,11 @@ function Dashboard({ user }) {
     loadMonths();
   };
 
+  // ✅ CLEAR GLOW WHEN USER VIEWS THE INSIGHT
   const handleViewInsight = () => {
     setShowAI(true);
     setIsMinimized(false);
-    setHasNewSuggestion(false);
+    setHasNewSuggestion(false); // ✅ CLEAR GLOW
   };
 
   if (loading && months.length === 0) {
@@ -168,7 +169,7 @@ function Dashboard({ user }) {
 
   return (
     <div className="min-h-screen bg-dark-primary">
-      {/* HEADER */}
+      {/* HEADER - COMPLETELY CLEAN - ONLY TITLE + MONTH SELECTOR */}
       <div className="sticky top-16 z-30 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 backdrop-blur-xl border-b-2 border-white/20 shadow-xl">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
@@ -239,44 +240,54 @@ function Dashboard({ user }) {
         </div>
       </div>
 
-      {/* ✅ MINIMIZED AI CARD - BOTTOM RIGHT */}
+      {/* ✅ MINIMIZED AI CARD - BOTTOM RIGHT WITH GLOW UNTIL VIEWED */}
       {aiSuggestion && isMinimized && (
-        <div className="fixed bottom-6 right-6 z-40 md:bottom-8 md:right-8 lg:bottom-12 lg:right-12 w-80">
+        <div className="fixed bottom-6 right-6 z-40 md:bottom-8 md:right-8 lg:bottom-12 lg:right-12 w-96 sm:w-80">
           <div className="group relative">
+            {/* ✅ CONTINUOUS GLOW UNTIL USER VIEWS */}
             {hasNewSuggestion && (
               <>
-                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/50 via-blue-500/50 to-cyan-500/50 rounded-3xl blur-xl opacity-100 animate-ping"></div>
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400/40 via-blue-400/40 to-cyan-400/40 rounded-3xl blur-lg opacity-80"></div>
+                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/50 via-blue-500/50 to-cyan-500/50 rounded-3xl blur-lg opacity-100 animate-pulse"></div>
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400/40 via-blue-400/40 to-cyan-400/40 rounded-3xl blur-md opacity-80"></div>
               </>
             )}
 
-            <div className="relative bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-950/90 backdrop-blur-xl border border-cyan-400/50 rounded-3xl p-6 shadow-2xl hover:shadow-cyan-500/25 hover:border-cyan-400/70 transition-all cursor-pointer hover:scale-[1.02]">
-              <div className="flex items-start justify-between mb-4">
+            {/* CARD */}
+            <div className="relative bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-2 border-cyan-500/30 rounded-3xl p-5 shadow-2xl backdrop-blur-xl hover:border-cyan-500/50 transition-all">
+              {/* HEADER */}
+              <div className="flex items-start justify-between">
                 <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-xl shadow-lg flex-shrink-0 border-2 border-purple-400/50">
+                  <div className="w-14 h-14 bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-xl shadow-lg flex-shrink-0">
                     🤖
                   </div>
                   <div>
-                    <h3 className="text-lg font-black text-white drop-shadow-sm">Budget Coach</h3>
-                    <p className="text-cyan-300 text-xs font-semibold tracking-wide">AI-Powered Insights</p>
+                    <h3 className="text-lg font-black text-white">Budget Coach</h3>
+                    <p className="text-cyan-300 text-xs font-semibold">AI-Powered Insights</p>
                   </div>
                 </div>
               </div>
 
-              <p className="text-white/90 text-sm leading-relaxed line-clamp-2 mb-6 bg-slate-700/50 backdrop-blur-sm rounded-xl p-3 border border-slate-600/50">
+              {/* DIVIDER */}
+              <div className="h-px bg-gradient-to-r from-cyan-500/0 via-cyan-500/20 to-cyan-500/0 my-3"></div>
+
+              {/* SUGGESTION */}
+              <p className="text-white/90 text-sm leading-relaxed line-clamp-2 mb-4">
                 {aiSuggestion.suggestion}
               </p>
 
-              <div className="flex items-center gap-3 pt-2 border-t border-slate-700/50">
+              {/* ✅ BUTTON ROW - MAXIMIZE + CLOSE */}
+              <div className="flex items-center gap-2">
                 <button
                   onClick={handleViewInsight}
-                  className="flex-1 px-4 py-2.5 bg-gradient-to-r from-cyan-500/90 to-blue-500/90 hover:from-cyan-400 hover:to-blue-400 text-white font-bold rounded-xl text-sm transition-all backdrop-blur-sm border border-cyan-400/50 shadow-lg hover:shadow-cyan-500/30 hover:scale-[1.02]"
+                  className="flex-1 px-3 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold rounded-lg text-sm transition-all flex items-center justify-center gap-2"
+                  title="Maximize"
                 >
                   📤 Expand
                 </button>
                 <button
                   onClick={() => setAiSuggestion(null)}
-                  className="w-11 h-11 rounded-xl bg-slate-700/70 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/80 hover:text-white transition-all font-bold text-lg shadow-md hover:shadow-lg"
+                  className="w-10 h-10 rounded-lg bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-lg flex-shrink-0"
+                  title="Close"
                 >
                   ✕
                 </button>
@@ -286,80 +297,61 @@ function Dashboard({ user }) {
         </div>
       )}
 
-      {/* ✅ MAXIMIZED AI - EXACTLY LIKE YOUR SCREENSHOT */}
+      {/* ✅ FULL SCREEN MODAL - WHEN MAXIMIZED */}
       {showAI && aiSuggestion && !isMinimized && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-end sm:items-center justify-end p-4 sm:p-6">
-          <div className="relative w-full sm:w-[420px] sm:max-w-[95vw] h-[85vh] sm:h-auto max-h-[95vh]">
-            {/* BACKGROUND GLOW */}
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-500/20 to-cyan-500/20 rounded-3xl blur-xl"></div>
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="relative w-full max-w-2xl max-h-96 overflow-auto">
+            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/60 via-blue-500/60 to-cyan-500/60 rounded-3xl blur-lg opacity-100"></div>
             
-            {/* MAIN CARD */}
-            <div className="relative bg-gradient-to-b from-slate-900/95 via-slate-800/95 to-slate-900/90 backdrop-blur-xl border-2 border-gradient-to-r from-cyan-400/60 via-blue-400/60 to-cyan-400/60 rounded-3xl shadow-2xl shadow-cyan-500/20 overflow-hidden h-full flex flex-col">
-              
-              {/* HEADER */}
-              <div className="p-6 border-b border-slate-700/50 flex items-center justify-between shrink-0">
-                <div className="flex items-center gap-3">
-                  <div className="w-14 h-14 bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-2xl shadow-2xl border-2 border-purple-400/50">
+            <div className="relative bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-2 border-cyan-500/50 rounded-3xl p-8 shadow-2xl backdrop-blur-xl">
+              <div className="flex items-start justify-between mb-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-20 h-20 bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-4xl shadow-lg">
                     🤖
                   </div>
                   <div>
-                    <h2 className="text-2xl font-black text-white drop-shadow-lg">Budget Coach</h2>
-                    <p className="text-cyan-300 text-sm font-semibold tracking-wide">Smart Insight Coach</p>
+                    <h2 className="text-3xl font-black text-white">Budget Coach</h2>
+                    <p className="text-cyan-300 text-sm font-semibold">AI-Powered Insights</p>
                   </div>
                 </div>
-                
+
+                {/* ✅ MINIMIZE BUTTON */}
                 <button
                   onClick={() => {
                     setShowAI(false);
                     setIsMinimized(true);
                   }}
-                  className="w-12 h-12 rounded-2xl bg-slate-700/60 hover:bg-slate-600 border-2 border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/80 hover:text-white transition-all font-bold text-xl shadow-lg hover:shadow-xl backdrop-blur-sm"
+                  className="w-12 h-12 rounded-xl bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-2xl flex-shrink-0"
+                  title="Minimize"
                 >
                   📥
                 </button>
               </div>
 
-              {/* SCROLLABLE CONTENT */}
-              <div className="flex-1 overflow-y-auto p-6 pb-12 space-y-6">
-                
-                {/* MAIN SUGGESTION */}
-                <div className="bg-gradient-to-r from-slate-700/60 to-slate-800/60 backdrop-blur-sm border border-slate-600/50 rounded-2xl p-6">
-                  <p className="text-white/95 text-base leading-relaxed drop-shadow-sm">
-                    {aiSuggestion.suggestion}
-                  </p>
+              <div className="h-px bg-gradient-to-r from-cyan-500/0 via-cyan-500/50 to-cyan-500/0 mb-6"></div>
+
+              <p className="text-white text-lg leading-relaxed mb-6">
+                {aiSuggestion.suggestion}
+              </p>
+
+              {aiSuggestion.metrics && (
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="bg-cyan-500/20 border border-cyan-400/40 rounded-2xl p-4">
+                    <p className="text-cyan-300 text-sm font-bold uppercase">Expense Ratio</p>
+                    <p className="text-cyan-100 text-3xl font-black">{aiSuggestion.metrics.expenseRatio}</p>
+                  </div>
+                  <div className="bg-blue-500/20 border border-blue-400/40 rounded-2xl p-4">
+                    <p className="text-blue-300 text-sm font-bold uppercase">Savings Rate</p>
+                    <p className="text-blue-100 text-3xl font-black">{aiSuggestion.metrics.savingsPercentage}</p>
+                  </div>
                 </div>
+              )}
 
-                {/* METRICS */}
-                {aiSuggestion.metrics && (
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-gradient-to-br from-red-500/20 via-red-600/20 to-red-700/20 border border-red-400/50 rounded-2xl p-6 text-center shadow-lg shadow-red-500/20 backdrop-blur-sm">
-                      <p className="text-red-300 text-xs font-bold uppercase tracking-wider mb-2">Expense Ratio</p>
-                      <p className="text-red-100 text-4xl font-black drop-shadow-2xl">{aiSuggestion.metrics.expenseRatio}</p>
-                    </div>
-                    <div className="bg-gradient-to-br from-emerald-500/20 via-emerald-600/20 to-emerald-700/20 border border-emerald-400/50 rounded-2xl p-6 text-center shadow-lg shadow-emerald-500/20 backdrop-blur-sm">
-                      <p className="text-emerald-300 text-xs font-bold uppercase tracking-wider mb-2">Savings Rate</p>
-                      <p className="text-emerald-100 text-4xl font-black drop-shadow-2xl">{aiSuggestion.metrics.savingsPercentage}</p>
-                    </div>
-                  </div>
-                )}
-
-                {/* RECOMMENDATION */}
-                {aiSuggestion.recommendation && (
-                  <div className="bg-gradient-to-r from-cyan-500/25 via-blue-500/25 to-cyan-500/25 border-2 border-cyan-400/60 rounded-3xl p-8 text-center backdrop-blur-sm shadow-2xl shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all hover:scale-[1.02]">
-                    <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 via-orange-400 to-yellow-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-2xl text-2xl border-2 border-yellow-400/50">
-                      ✨
-                    </div>
-                    <p className="text-cyan-100 text-xl font-bold leading-relaxed drop-shadow-lg">
-                      {aiSuggestion.recommendation}
-                    </p>
-                  </div>
-                )}
-
-                {/* FOOTER TEXT */}
-                <p className="text-center text-slate-400 text-xs font-medium opacity-80">
-                  🔄 Updates after every transaction
-                </p>
-              </div>
+              {aiSuggestion.recommendation && (
+                <div className="bg-gradient-to-r from-cyan-500/30 to-blue-500/30 border border-cyan-400/50 rounded-2xl p-6">
+                  <p className="text-cyan-100 text-lg font-bold">{aiSuggestion.recommendation}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
