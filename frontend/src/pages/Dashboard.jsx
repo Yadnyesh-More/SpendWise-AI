@@ -171,7 +171,7 @@ function Dashboard({ user }) {
 
   return (
     <div className="min-h-screen bg-dark-primary">
-      {/* CLEAN HEADER - NO "AI INSIGHTS AVAILABLE" BUTTON */}
+      {/* CLEAN HEADER - NO BUTTONS */}
       <div className="sticky top-16 z-30 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 backdrop-blur-xl border-b-2 border-white/20 shadow-xl">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
@@ -281,59 +281,59 @@ function Dashboard({ user }) {
         </div>
       )}
 
-      {/* MAXIMIZED AI ADVISOR (ONLY MIN BUTTON ⬇) */}
+      {/* MAXIMIZED AI ADVISOR - COMPACT RIGHT SIDE LIKE IMG 2 [file:7] */}
       {showAI && aiSuggestion && !isMinimized && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-8">
-          <div className="w-full max-w-2xl relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-purple-500/20 rounded-3xl blur-xl"></div>
-            <div className="relative bg-gradient-to-br from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-4 border-purple-500/50 rounded-3xl p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-end p-8 pr-4">
+          <div className="w-full max-w-md relative ml-auto">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 via-pink-500/20 to-purple-500/30 rounded-2xl blur-xl"></div>
+            <div className="relative bg-gradient-to-br from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-3 border-purple-500/50 rounded-2xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
               
               {/* HEADER WITH ONLY MIN BUTTON */}
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-2xl border-3 border-white/30">
-                    <span className="text-3xl">🤖</span>
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-xl border-2 border-white/30">
+                    <span className="text-2xl">🤖</span>
                   </div>
                   <div>
-                    <h2 className="text-3xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-purple-500 bg-clip-text text-transparent">Budget Coach</h2>
-                    <p className="text-blue-300 text-lg font-semibold mt-1">AI-Powered Insights</p>
+                    <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Budget Coach</h2>
+                    <p className="text-blue-300 text-sm font-semibold mt-1">AI-Powered Insights</p>
                   </div>
                 </div>
                 {/* ONLY MIN BUTTON ⬇ */}
                 <button
                   onClick={handleMinimize}
-                  className="w-12 h-12 bg-blue-500/90 hover:bg-blue-400 rounded-full flex items-center justify-center text-white font-bold shadow-xl hover:shadow-blue-400/50 transition-all text-xl"
+                  className="w-10 h-10 bg-blue-500/90 hover:bg-blue-400 rounded-full flex items-center justify-center text-white font-bold shadow-lg hover:shadow-blue-400/50 transition-all text-lg"
                 >
                   ⬇
                 </button>
               </div>
 
               {/* MAIN INSIGHT */}
-              <div className="mb-8">
-                <p className="text-white text-xl leading-relaxed text-center mb-8">
+              <div className="mb-6">
+                <p className="text-white text-base leading-relaxed text-center mb-6 px-2">
                   {aiSuggestion.suggestion}
                 </p>
               </div>
 
-              {/* METRICS */}
+              {/* METRICS - COMPACT */}
               {aiSuggestion.metrics && (
-                <div className="grid grid-cols-2 gap-6 mb-8">
-                  <div className="bg-gradient-to-br from-red-500/25 to-red-600/25 border-3 border-red-500/50 rounded-3xl p-8 text-center backdrop-blur-xl shadow-2xl">
-                    <p className="text-red-300 text-sm font-bold uppercase tracking-wider mb-4">Expense Ratio</p>
-                    <p className="text-red-100 text-5xl font-black">{aiSuggestion.metrics.expenseRatio}</p>
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="bg-gradient-to-br from-red-500/30 to-red-600/30 border-2 border-red-500/50 rounded-xl p-6 text-center backdrop-blur-xl shadow-xl">
+                    <p className="text-red-300 text-xs font-bold uppercase tracking-wider mb-2">Expense Ratio</p>
+                    <p className="text-red-100 text-3xl font-black">{aiSuggestion.metrics.expenseRatio}</p>
                   </div>
-                  <div className="bg-gradient-to-br from-emerald-500/25 to-emerald-600/25 border-3 border-emerald-500/50 rounded-3xl p-8 text-center backdrop-blur-xl shadow-2xl">
-                    <p className="text-emerald-300 text-sm font-bold uppercase tracking-wider mb-4">Savings Rate</p>
-                    <p className="text-emerald-100 text-5xl font-black">{aiSuggestion.metrics.savingsPercentage}</p>
+                  <div className="bg-gradient-to-br from-emerald-500/30 to-emerald-600/30 border-2 border-emerald-500/50 rounded-xl p-6 text-center backdrop-blur-xl shadow-xl">
+                    <p className="text-emerald-300 text-xs font-bold uppercase tracking-wider mb-2">Savings Rate</p>
+                    <p className="text-emerald-100 text-3xl font-black">{aiSuggestion.metrics.savingsPercentage}</p>
                   </div>
                 </div>
               )}
 
-              {/* RECOMMENDATION */}
+              {/* RECOMMENDATION - COMPACT */}
               {aiSuggestion.recommendation && (
                 <div className="text-center">
-                  <div className="inline-block bg-gradient-to-r from-cyan-500/40 to-blue-500/40 border-3 border-cyan-500/60 rounded-3xl p-10 backdrop-blur-xl shadow-2xl">
-                    <p className="text-cyan-100 text-2xl font-bold leading-relaxed bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                  <div className="bg-gradient-to-r from-cyan-500/40 to-blue-500/40 border-3 border-cyan-500/60 rounded-xl p-6 backdrop-blur-xl shadow-xl">
+                    <p className="text-cyan-100 text-lg font-bold leading-tight bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
                       {aiSuggestion.recommendation}
                     </p>
                   </div>
