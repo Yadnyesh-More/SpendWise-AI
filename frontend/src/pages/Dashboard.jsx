@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import { formatCurrency } from '../utils';
 import TransactionForm from '../components/TransactionForm';
 import TransactionList from '../components/TransactionList';
@@ -170,7 +171,7 @@ function Dashboard({ user }) {
 
   return (
     <div className="min-h-screen bg-dark-primary">
-      {/* CLEAN HEADER - NO BUTTONS */}
+      {/* CLEAN HEADER - NO AI BUTTON (LIKE IMAGE 2) */}
       <div className="sticky top-16 z-30 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 backdrop-blur-xl border-b-2 border-white/20 shadow-xl">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
@@ -239,7 +240,7 @@ function Dashboard({ user }) {
         </div>
       </div>
 
-      {/* MINI AI ADVISOR - BOTTOM RIGHT LIKE IMAGE */}
+      {/* MINI AI ADVISOR - BOTTOM RIGHT (LIKE IMAGE 2) */}
       {aiSuggestion && isMinimized && (
         <div className="fixed bottom-8 right-8 z-40 w-80">
           <div className="relative">
@@ -251,9 +252,8 @@ function Dashboard({ user }) {
               </>
             )}
 
-            {/* MINI CARD - EXACTLY LIKE IMAGE */}
+            {/* MINI CARD - EXACTLY LIKE IMAGE 2 */}
             <div className="relative bg-gradient-to-b from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-2 border-purple-500/40 rounded-3xl p-6 shadow-2xl hover:border-purple-500/60 hover:shadow-purple-500/20 transition-all">
-              {/* HEADER WITH BUTTONS LIKE IMAGE */}
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-xl border-2 border-white/20">
@@ -296,13 +296,12 @@ function Dashboard({ user }) {
         </div>
       )}
 
-      {/* MAXIMIZED AI ADVISOR - LIKE IMAGE */}
+      {/* MAXIMIZED AI ADVISOR */}
       {showAI && aiSuggestion && !isMinimized && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-6">
           <div className="w-full max-w-2xl max-h-[90vh] relative">
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-purple-500/20 rounded-3xl blur-xl"></div>
             <div className="relative bg-gradient-to-br from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-4 border-purple-500/50 rounded-3xl p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
-              {/* HEADER */}
               <div className="flex items-start justify-between mb-8">
                 <div className="flex items-center gap-4">
                   <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl border-3 border-white/30">
@@ -334,7 +333,6 @@ function Dashboard({ user }) {
                 </div>
               </div>
 
-              {/* CONTENT */}
               <div className="space-y-8">
                 <p className="text-white text-xl leading-relaxed text-center mb-8">
                   {aiSuggestion.suggestion}
@@ -369,4 +367,4 @@ function Dashboard({ user }) {
   );
 }
 
-export default Dashboard; 
+export default Dashboard;
