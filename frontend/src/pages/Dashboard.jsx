@@ -18,6 +18,7 @@ function Dashboard({ user }) {
   const [aiSuggestion, setAiSuggestion] = useState(null);
   const [showAI, setShowAI] = useState(false);
   const [cardGlow, setCardGlow] = useState(false);
+  const [isFirstLoad, setIsFirstLoad] = useState(true); // Track if first time
 
   const [loading, setLoading] = useState(true);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -67,6 +68,16 @@ function Dashboard({ user }) {
 
         if (aiRes.data.success && aiRes.data.ai) {
           setAiSuggestion(aiRes.data.ai);
+          
+          // FIRST TIME ONLY - AUTO MAXIMIZE
+          if (isFirstLoad) {
+            setShowAI(true);
+            setIsFirstLoad(false);
+          } else {
+            // SUBSEQUENT TIMES - JUST GLOW
+            setCardGlow(true);
+            setTimeout(() => setCardGlow(false), 4000);
+          }
         }
       } catch (aiErr) {
         const expenseRatio = s.income > 0 ? 
@@ -99,11 +110,17 @@ function Dashboard({ user }) {
           metrics: { expenseRatio, savingsPercentage: savingsRate },
           recommendation
         });
-      }
 
-      // GLOW on card when new transaction
-      setCardGlow(true);
-      setTimeout(() => setCardGlow(false), 4000);
+        // FIRST TIME ONLY - AUTO MAXIMIZE
+        if (isFirstLoad) {
+          setShowAI(true);
+          setIsFirstLoad(false);
+        } else {
+          // SUBSEQUENT TIMES - JUST GLOW
+          setCardGlow(true);
+          setTimeout(() => setCardGlow(false), 4000);
+        }
+      }
 
     } catch (err) {
       console.error('Dashboard error:', err);
@@ -150,7 +167,7 @@ function Dashboard({ user }) {
 
   return (
     <div className="min-h-screen bg-dark-primary">
-      {/* HEADER - CLEAN NO BADGES */}
+      {/* HEADER - CLEAN */}
       <div className="sticky top-16 z-30 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 backdrop-blur-xl border-b-2 border-white/20 shadow-xl">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
@@ -221,11 +238,10 @@ function Dashboard({ user }) {
         </div>
       </div>
 
-      {/* 🚀 MINIMIZED BUDGET COACH + AI CARD BELOW */}
-      <div className="fixed bottom-6 right-6 z-40 md:bottom-8 md:right-8 lg:bottom-12 lg:right-12 w-96 sm:w-80">
-        {/* AI ADVISOR CARD - LIKE YOUR PHOTO */}
-        {aiSuggestion && (
-          <div className="mb-6 group relative">
+      {/* 🎯 MINIMIZED AI ADVISOR CARD ONLY - ALWAYS VISIBLE */}
+      {aiSuggestion && !showAI && (
+        <div className="fixed bottom-6 right-6 z-40 md:bottom-8 md:right-8 lg:bottom-12 lg:right-12 w-96 sm:w-80">
+          <div className="group relative">
             {/* GLOWING BORDER ANIMATION - ONLY when new transaction */}
             {cardGlow && (
               <>
@@ -234,8 +250,9 @@ function Dashboard({ user }) {
               </>
             )}
 
-            {/* CARD CONTENT */}
-            <div className="relative bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-2 border-cyan-500/30 rounded-3xl p-5 shadow-2xl backdrop-blur-xl">
+            {/* CARD CONTENT - LIKE YOUR PHOTO */}
+            <div className="relative bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-2 border-cyan-500/30 rounded-3xl p-5 shadow-2xl backdrop-blur-xl cursor-pointer hover:border-cyan-500/50 transition-all"
+              onClick={() => setShowAI(true)}>
               {/* HEADER */}
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-start gap-3">
@@ -252,7 +269,10 @@ function Dashboard({ user }) {
                 <div className="flex gap-2">
                   {/* MAXIMIZE BUTTON */}
                   <button
-                    onClick={() => setShowAI(true)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowAI(true);
+                    }}
                     className="w-9 h-9 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/40 border border-cyan-400/30 hover:border-cyan-400/60 flex items-center justify-center text-cyan-300 hover:text-cyan-200 transition-all font-bold text-sm"
                     title="Maximize"
                   >
@@ -260,7 +280,10 @@ function Dashboard({ user }) {
                   </button>
                   {/* CLOSE BUTTON */}
                   <button
-                    onClick={() => setAiSuggestion(null)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setAiSuggestion(null);
+                    }}
                     className="w-9 h-9 rounded-lg bg-slate-700/50 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 flex items-center justify-center text-white/70 hover:text-white transition-all font-bold text-lg"
                     title="Close"
                   >
@@ -273,58 +296,15 @@ function Dashboard({ user }) {
               <div className="h-px bg-gradient-to-r from-cyan-500/0 via-cyan-500/20 to-cyan-500/0 mb-3"></div>
 
               {/* SUGGESTION */}
-              <p className="text-white/90 text-sm leading-relaxed mb-3 line-clamp-2">
+              <p className="text-white/90 text-sm leading-relaxed line-clamp-2">
                 {aiSuggestion.suggestion}
               </p>
-
-              {/* METRICS (optional - can be hidden on small) */}
-              {aiSuggestion.metrics && (
-                <div className="hidden sm:grid grid-cols-2 gap-2 mb-3">
-                  <div className="bg-cyan-500/10 border border-cyan-400/20 rounded-lg p-2">
-                    <p className="text-cyan-300 text-xs font-bold">Expense</p>
-                    <p className="text-cyan-100 text-sm font-black">{aiSuggestion.metrics.expenseRatio}</p>
-                  </div>
-                  <div className="bg-blue-500/10 border border-blue-400/20 rounded-lg p-2">
-                    <p className="text-blue-300 text-xs font-bold">Savings</p>
-                    <p className="text-blue-100 text-sm font-black">{aiSuggestion.metrics.savingsPercentage}</p>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
-        )}
-
-        {/* COACH BUTTON ALWAYS BELOW CARD */}
-        <div className="relative group">
-          {/* SOFT GLOW WHEN CARD GLOWS */}
-          {cardGlow && (
-            <>
-              <div className="absolute -inset-8 bg-gradient-to-r from-cyan-400/50 via-blue-500/60 to-cyan-400/50 rounded-3xl blur-2xl opacity-70 animate-pulse"></div>
-              <div className="absolute -inset-6 bg-gradient-to-r from-blue-500/40 via-cyan-500/50 to-blue-500/40 rounded-3xl blur-xl opacity-60 animate-pulse"></div>
-            </>
-          )}
-          
-          {/* COACH BUTTON */}
-          <button
-            className={`relative z-10 w-full py-4 rounded-3xl shadow-2xl hover:shadow-3xl hover:scale-105 transform transition-all duration-300 flex items-center justify-center gap-3 backdrop-blur-xl border-4 font-bold text-base cursor-pointer
-              ${cardGlow 
-                ? 'bg-gradient-to-br from-cyan-600 via-blue-600 to-cyan-600 border-cyan-400/70 ring-4 ring-cyan-400/50 text-white'
-                : 'bg-gradient-to-br from-purple-600 via-pink-600 to-purple-600 border-purple-500/50 hover:border-cyan-400/70 ring-2 ring-purple-500/30 hover:ring-cyan-400/50 hover:bg-gradient-to-br hover:from-cyan-600 hover:via-blue-600 hover:to-cyan-600 text-white'
-              }`}
-            title="Budget Coach"
-          >
-            <span className="text-2xl">🤖</span>
-            <span>Coach</span>
-          </button>
-          
-          {/* TOOLTIP */}
-          <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gray-900/95 backdrop-blur-md text-white px-4 py-2 rounded-2xl text-xs font-bold opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap shadow-2xl border border-gray-700/50 pointer-events-none">
-            Budget Coach
-          </div>
         </div>
-      </div>
+      )}
 
-      {/* FULL SCREEN AI MODAL - MAXIMIZED */}
+      {/* FULL SCREEN AI MODAL - AUTO MAXIMIZE FIRST TIME */}
       {showAI && aiSuggestion && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="relative w-full max-w-2xl max-h-96 overflow-auto">
