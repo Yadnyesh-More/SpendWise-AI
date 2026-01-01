@@ -15,7 +15,7 @@ import adminRoutes from './src/routes/adminRoutes.js';
 import aiRoutes from './src/routes/aiRoutes.js';
 import authMiddleware from './src/middleware/auth.js';
 import analyticsRoutes from './src/routes/analytics.js';
-import exportRoutes from './routes/export.js';
+import exportRoutes from './src/routes/export.js';
 import fraudDetection from './middleware/fraudDetection.js';
 
 dotenv.config();
