@@ -101,4 +101,4 @@ const getFraudAlerts = async (req, res) => {
   }
 };
 
-export { detectFraud, getFraudAlerts };
+export default { detectFraud, getFraudAlerts };
