@@ -1,5 +1,5 @@
 import User from '../models/User.js';
-import otpStore from '../utils/otpStore.js'; // Redis or in-memory
+import otpStore from '../utils/otpStore.js';
 
 export const verifyOTP = async (req, res, next) => {
   try {
@@ -7,13 +7,19 @@ export const verifyOTP = async (req, res, next) => {
     
     const storedOTP = otpStore.get(email);
     if (!storedOTP || storedOTP !== otp) {
-      return res.status(400).json({ success: false, message: 'Invalid OTP' });
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Invalid or expired OTP' 
+      });
     }
     
-    // Clear OTP
+    // Clear OTP after verify
     otpStore.delete(email);
     next();
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ 
+      success: false, 
+      message: error.message 
+    });
   }
 };
