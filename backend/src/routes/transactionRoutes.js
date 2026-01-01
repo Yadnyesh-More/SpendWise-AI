@@ -1,5 +1,5 @@
 import express from 'express';
-import { detectFraud } from '../middleware/fraudDetection.js';
+import fraudDetection from '../middleware/fraudDetection.js';
 import {
   createTransaction,
   getTransactions,
@@ -11,7 +11,7 @@ import {
 import authMiddleware from '../middleware/auth.js';
 
 const router = express.Router();
-router.post('/transactions', detectFraud, createTransaction);
+router.post('/transactions', fraudDetection.detectFraud, createTransaction);
 router.use(authMiddleware);
 
 router.post('/', createTransaction);
@@ -20,6 +20,6 @@ router.get('/summary', getSummary);
 router.get('/months/list', getMonthsList);
 router.get('/analytics', getAnalytics);
 router.delete('/:id', deleteTransaction);
-router.get('/fraud-alerts', getFraudAlerts);
+router.get('/fraud-alerts', fraudDetection.getFraudAlerts);
 
 export default router;
