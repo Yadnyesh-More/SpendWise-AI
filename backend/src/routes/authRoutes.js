@@ -2,6 +2,10 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import { loginLimiter } from '../middleware/rateLimiter.js';
+import otpStore from '../utils/otpStore.js';  // NEW
+import { sendEmail } from '../utils/email.js'; // NEW
+import { verifyOTP } from '../middleware/verifyOTP.js'; // NEW
+
 console.log('✅ authRoutes loaded');
 
 const router = express.Router();
@@ -13,19 +17,79 @@ function generateToken(userId) {
   });
 }
 
-// Register - Create new user
-router.post('/register', async (req, res) => {
+// NEW: Send OTP to email (Step 1)
+router.post('/send-otp', async (req, res) => {
   try {
-    const { name, email, password, confirmPassword } = req.body;
+    const { email } = req.body;
 
-    // Validation 
-    if (!name || !email || !password) {
+    if (!email) {
       return res.status(400).json({
         success: false,
-        message: 'All fields are required'
+        message: 'Email is required'
       });
     }
 
+    // Check if email exists (allow login OTP too)
+    const existingUser = await User.findOne({ email });
+    
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    // Store OTP (expires in 5 min)
+    otpStore.set(email, otp);
+    
+    // Send email
+    await sendEmail(email, otp);
+    
+    res.json({
+      success: true,
+      message: existingUser 
+        ? 'OTP sent to your registered email' 
+        : 'OTP sent! Check your inbox (including spam)'
+    });
+  } catch (error) {
+    console.error('Send OTP error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to send OTP'
+    });
+  }
+});
+
+// NEW: Verify OTP + Register/Login (Step 2)
+router.post('/verify-otp', verifyOTP, async (req, res) => {
+  try {
+    const { name, email, password, confirmPassword } = req.body;
+
+    // Login if user exists, register if new
+    let user = await User.findOne({ email });
+
+    if (user) {
+      // LOGIN flow
+      const isPasswordCorrect = await user.matchPassword(password);
+      if (!isPasswordCorrect) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid password'
+        });
+      }
+
+      const token = generateToken(user._id);
+      return res.json({
+        success: true,
+        message: 'Login successful',
+        token,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role
+        },
+        isNewUser: false
+      });
+    }
+
+    // REGISTER flow (new user)
     if (password !== confirmPassword) {
       return res.status(400).json({
         success: false,
@@ -40,23 +104,13 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: 'Email already registered'
-      });
-    }
-
     // Create new user
-    const user = await User.create({
+    user = await User.create({
       name,
       email,
       password
     });
 
-    // Generate token
     const token = generateToken(user._id);
 
     res.status(201).json({
@@ -68,22 +122,22 @@ router.post('/register', async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role
-      }
+      },
+      isNewUser: true
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Registration error: ' + error.message
+      message: 'Verification error: ' + error.message
     });
   }
 });
 
-// Login - Authenticate user
+// OLD: Keep for backward compatibility (optional)
 router.post('/login', loginLimiter, async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validation
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -91,7 +145,6 @@ router.post('/login', loginLimiter, async (req, res) => {
       });
     }
 
-    // Find user
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({
@@ -100,7 +153,6 @@ router.post('/login', loginLimiter, async (req, res) => {
       });
     }
 
-    // Check password
     const isPasswordCorrect = await user.matchPassword(password);
     if (!isPasswordCorrect) {
       return res.status(400).json({
@@ -109,7 +161,6 @@ router.post('/login', loginLimiter, async (req, res) => {
       });
     }
 
-    // Generate token
     const token = generateToken(user._id);
 
     res.json({
@@ -131,12 +182,11 @@ router.post('/login', loginLimiter, async (req, res) => {
   }
 });
 
-// Google OAuth login (simplified)
+// Google OAuth (unchanged)
 router.post('/google', async (req, res) => {
   try {
     const { googleId, email, name } = req.body;
 
-    // Find or create user
     let user = await User.findOne({
       $or: [{ googleId }, { email }]
     });
