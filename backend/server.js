@@ -14,6 +14,9 @@ import transactionRoutes from './src/routes/transactionRoutes.js';
 import adminRoutes from './src/routes/adminRoutes.js';
 import aiRoutes from './src/routes/aiRoutes.js';
 import authMiddleware from './src/middleware/auth.js';
+import analyticsRoutes from './routes/analytics.js';
+import exportRoutes from './routes/export.js';
+import fraudDetection from './middleware/fraudDetection.js';
 
 dotenv.config();
 
@@ -72,6 +75,10 @@ app.post('/test', (req, res) => {
 
 // Auth routes
 app.use('/api/auth', authRoutes);
+
+//Other routes
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/export', exportRoutes);
 
 // Protected routes
 app.use('/api/transactions', authMiddleware, transactionRoutes);

@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { formatCurrency } from '../utils';
+// import { formatCurrency } from '../utils';
 import TransactionForm from '../components/TransactionForm';
 import TransactionList from '../components/TransactionList';
 import LoadingSpinner from '../components/LoadingSpinner';
 import api from '../api';
+import ExpenseTrends from '../components/ExpenseTrends';
+import FraudAlerts from '../components/FraudAlerts';
+import SavingsGoals from '../components/SavingsGoals';
+import { exportCSV, exportPDF ,formatCurrency} from '../utils/exportUtils';
 
 function Dashboard({ user }) {
   const [summary, setSummary] = useState({
@@ -75,10 +79,10 @@ function Dashboard({ user }) {
           setAiSuggestion(aiRes.data.ai);
         }
       } catch (aiErr) {
-        const expenseRatio = s.income > 0 ? 
-          ((s.expense / s.income) * 100).toFixed(0) + '%' : '0%';
-        const savingsRate = s.income > 0 ? 
-          (100 - parseFloat(expenseRatio)).toFixed(0) + '%' : '0%';
+        const expenseRatio = s.income > 0 
+          ? ((s.expense / s.income) * 100).toFixed(0) + '%' : '0%';
+        const savingsRate = s.income > 0 
+          ? (100 - parseFloat(expenseRatio)).toFixed(0) + '%' : '0%';
         
         let suggestionText, recommendation;
         const expensePercent = parseFloat(expenseRatio);
@@ -171,7 +175,7 @@ function Dashboard({ user }) {
 
   return (
     <div className="min-h-screen bg-dark-primary">
-      {/* CLEAN HEADER - REMOVED "AI INSIGHTS AVAILABLE" BUTTON [file:8] */}
+      {/* CLEAN HEADER */}
       <div className="sticky top-16 z-30 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 backdrop-blur-xl border-b-2 border-white/20 shadow-xl">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
@@ -188,9 +192,9 @@ function Dashboard({ user }) {
               onChange={(e) => setSelectedMonth(e.target.value)}
               className="px-6 py-3 bg-white/20 border-2 border-white text-white rounded-xl font-bold focus:ring-2 focus:ring-white/50 cursor-pointer backdrop-blur-sm hover:bg-white/30 transition-all"
             >
-              <option value="all" style={{ backgroundColor: '#191F2B', color: '#E6EAF2' }}>📊 All Time</option>
+              <option value="all">📊 All Time</option>
               {months.map((month) => (
-                <option key={month} value={month} style={{ backgroundColor: '#191F2B', color: '#E6AF2' }}>
+                <option key={month} value={month}>
                   {new Date(month + '-01').toLocaleString('default', { month: 'long', year: 'numeric' })}
                 </option>
               ))}
@@ -238,9 +242,33 @@ function Dashboard({ user }) {
             </div>
           </div>
         </div>
+
+        {/* NEW FEATURES SECTION */}
+        <div className="space-y-8 mb-12">
+          {/* Export Buttons */}
+          <div className="flex flex-wrap gap-4 p-6 bg-white/10 rounded-3xl border border-white/20">
+            <button 
+              onClick={() => exportCSV(transactions, `budget-${selectedMonth}.csv`)}
+              className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all"
+            >
+              📊 Export CSV
+            </button>
+            <button 
+              onClick={() => exportPDF(selectedMonth)}
+              className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all"
+            >
+              📄 Export PDF
+            </button>
+          </div>
+
+          {/* Components */}
+          <ExpenseTrends userId={user.id} />
+          <FraudAlerts userId={user.id} />
+          <SavingsGoals userId={user.id} />
+        </div>
       </div>
 
-      {/* MINI AI ADVISOR - BOTTOM RIGHT (ONLY ⬆ MAX BUTTON) - UNCHANGED */}
+      {/* MINI AI ADVISOR - BOTTOM RIGHT */}
       {aiSuggestion && isMinimized && (
         <div className="fixed bottom-8 right-8 z-40 w-80">
           <div className="relative cursor-pointer" onClick={handleViewInsight}>
@@ -252,7 +280,7 @@ function Dashboard({ user }) {
               </>
             )}
 
-            <div className="relative bg-gradient-to-b from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-2 border-purple-500/40 rounded-3xl p-6 shadow-2xl hover:border-purple-500/60 hover:shadow-purple-500/20 transition-all ">
+            <div className="relative bg-gradient-to-b from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-2 border-purple-500/40 rounded-3xl p-6 shadow-2xl hover:border-purple-500/60 hover:shadow-purple-500/20 transition-all">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-xl border-2 border-white/20">
@@ -260,7 +288,6 @@ function Dashboard({ user }) {
                   </div>
                   <h3 className="text-lg font-bold text-white">Budget Coach</h3>
                 </div>
-                {/* ONLY MAX BUTTON ⬆ */}
                 <button
                   onClick={handleViewInsight}
                   className="w-10 h-10 bg-blue-500/90 hover:bg-blue-400 rounded-full flex items-center justify-center text-white font-bold shadow-lg hover:shadow-blue-400/50 transition-all text-lg"
@@ -277,68 +304,67 @@ function Dashboard({ user }) {
         </div>
       )}
 
-      {/* MAXIMIZED AI ADVISOR - COMPACT RIGHT SIDE - UNCHANGED */}
+      {/* MAXIMIZED AI ADVISOR - RIGHT SIDE */}
       {showAI && aiSuggestion && !isMinimized && (
         <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm">
-        <div className="fixed bottom-6 right-6 z-50 backdrop-blur-sm" >
-          <div className="w-full max-w-md relative ml-auto" onClick={handleMinimize}>
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 via-pink-500/20 to-purple-500/30 rounded-2xl blur-xl"></div>
-            <div className="relative bg-gradient-to-br from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-3 border-purple-500/50 rounded-2xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
-              
-              {/* HEADER WITH ONLY MIN BUTTON */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-xl border-2 border-white/30">
-                    <span className="text-2xl">🤖</span>
+          <div className="fixed bottom-6 right-6 z-50 backdrop-blur-sm">
+            <div className="w-full max-w-md relative ml-auto" onClick={handleMinimize}>
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 via-pink-500/20 to-purple-500/30 rounded-2xl blur-xl"></div>
+              <div className="relative bg-gradient-to-br from-slate-900/95 to-slate-950/95 backdrop-blur-xl border-3 border-purple-500/50 rounded-2xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+                
+                {/* HEADER */}
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-xl border-2 border-white/30">
+                      <span className="text-2xl">🤖</span>
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Budget Coach</h2>
+                      <p className="text-blue-300 text-sm font-semibold mt-1">AI-Powered Insights</p>
+                    </div>
                   </div>
-                  <div>
-                    <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Budget Coach</h2>
-                    <p className="text-blue-300 text-sm font-semibold mt-1">AI-Powered Insights</p>
-                  </div>
+                  <button
+                    onClick={handleMinimize}
+                    className="w-10 h-10 bg-blue-500/90 hover:bg-blue-400 rounded-full flex items-center justify-center text-white font-bold shadow-lg hover:shadow-blue-400/50 transition-all text-lg"
+                  >
+                    ⬇
+                  </button>
                 </div>
-                {/* ONLY MIN BUTTON ⬇ */}
-                <button
-                  onClick={handleMinimize}
-                  className="w-10 h-10 bg-blue-500/90 hover:bg-blue-400 rounded-full flex items-center justify-center text-white font-bold shadow-lg hover:shadow-blue-400/50 transition-all text-lg"
-                >
-                  ⬇
-                </button>
+
+                {/* MAIN INSIGHT */}
+                <div className="mb-6">
+                  <p className="text-white text-base leading-relaxed text-center mb-6 px-2">
+                    {aiSuggestion.suggestion}
+                  </p>
+                </div>
+
+                {/* METRICS */}
+                {aiSuggestion.metrics && (
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="bg-gradient-to-br from-red-500/30 to-red-600/30 border-2 border-red-500/50 rounded-xl p-6 text-center backdrop-blur-xl shadow-xl">
+                      <p className="text-red-300 text-xs font-bold uppercase tracking-wider mb-2">Expense Ratio</p>
+                      <p className="text-red-100 text-3xl font-black">{aiSuggestion.metrics.expenseRatio}</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-emerald-500/30 to-emerald-600/30 border-2 border-emerald-500/50 rounded-xl p-6 text-center backdrop-blur-xl shadow-xl">
+                      <p className="text-emerald-300 text-xs font-bold uppercase tracking-wider mb-2">Savings Rate</p>
+                      <p className="text-emerald-100 text-3xl font-black">{aiSuggestion.metrics.savingsPercentage}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* RECOMMENDATION */}
+                {aiSuggestion.recommendation && (
+                  <div className="text-center">
+                    <div className="bg-gradient-to-r from-cyan-500/40 to-blue-500/40 border-3 border-cyan-500/60 rounded-xl p-6 backdrop-blur-xl shadow-xl">
+                      <p className="text-cyan-100 text-lg font-bold leading-tight bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                        {aiSuggestion.recommendation}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
-
-              {/* MAIN INSIGHT */}
-              <div className="mb-6">
-                <p className="text-white text-base leading-relaxed text-center mb-6 px-2">
-                  {aiSuggestion.suggestion}
-                </p>
-              </div>
-
-              {/* METRICS - COMPACT */}
-              {aiSuggestion.metrics && (
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-gradient-to-br from-red-500/30 to-red-600/30 border-2 border-red-500/50 rounded-xl p-6 text-center backdrop-blur-xl shadow-xl">
-                    <p className="text-red-300 text-xs font-bold uppercase tracking-wider mb-2">Expense Ratio</p>
-                    <p className="text-red-100 text-3xl font-black">{aiSuggestion.metrics.expenseRatio}</p>
-                  </div>
-                  <div className="bg-gradient-to-br from-emerald-500/30 to-emerald-600/30 border-2 border-emerald-500/50 rounded-xl p-6 text-center backdrop-blur-xl shadow-xl">
-                    <p className="text-emerald-300 text-xs font-bold uppercase tracking-wider mb-2">Savings Rate</p>
-                    <p className="text-emerald-100 text-3xl font-black">{aiSuggestion.metrics.savingsPercentage}</p>
-                  </div>
-                </div>
-              )}
-
-              {/* RECOMMENDATION - COMPACT */}
-              {aiSuggestion.recommendation && (
-                <div className="text-center">
-                  <div className="bg-gradient-to-r from-cyan-500/40 to-blue-500/40 border-3 border-cyan-500/60 rounded-xl p-6 backdrop-blur-xl shadow-xl">
-                    <p className="text-cyan-100 text-lg font-bold leading-tight bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                      {aiSuggestion.recommendation}
-                    </p>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
-        </div>
         </div>
       )}
     </div>
