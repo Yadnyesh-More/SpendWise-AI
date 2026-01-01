@@ -76,12 +76,10 @@ app.post('/test', (req, res) => {
 // Auth routes
 app.use('/api/auth', authRoutes);
 
-//Other routes
-app.use('/api/analytics', analyticsRoutes);
-app.use('/api/export', exportRoutes);
-
 // Protected routes
 app.use('/api/transactions', authMiddleware, transactionRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/export', exportRoutes);
 app.use('/api/admin', authMiddleware, adminRoutes);
 app.use('/api/ai', authMiddleware, aiRoutes);
 
