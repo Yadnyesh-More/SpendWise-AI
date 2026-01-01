@@ -17,6 +17,7 @@ import authMiddleware from './src/middleware/auth.js';
 import analyticsRoutes from './src/routes/analytics.js';
 import exportRoutes from './src/routes/export.js';
 import fraudDetection from './src/middleware/fraudDetection.js';
+import goalsRouter from './routes/goals.js';
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ app.use(
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(mongoSanitize());
+
 
 /* -------------------- CORS (FIXED) -------------------- */
 
@@ -82,6 +84,7 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/export', exportRoutes);
 app.use('/api/admin', authMiddleware, adminRoutes);
 app.use('/api/ai', authMiddleware, aiRoutes);
+app.use('/api', goalsRouter); 
 
 // Keep backend alive
 setInterval(() => {
