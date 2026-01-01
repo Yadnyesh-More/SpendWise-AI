@@ -13,7 +13,7 @@ const FraudAlerts = ({ userId }) => {
   const fetchAlerts = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/api/analytics/fraud-alerts', {
+      const res = await api.get('/analytics/fraud-alerts', {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       setAlerts(res.data.alerts);

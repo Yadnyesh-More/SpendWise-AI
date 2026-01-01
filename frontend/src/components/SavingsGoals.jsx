@@ -13,7 +13,7 @@ const SavingsGoals = ({ userId }) => {
   const fetchGoals = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/api/goals', {
+      const res = await api.get('/goals', {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       setGoals(res.data.goals || []);
@@ -49,7 +49,7 @@ const SavingsGoals = ({ userId }) => {
     if (!amount) return;
     
     try {
-      await api.put(`/api/goals/${goalId}`, 
+      await api.put(`goals/${goalId}`, 
         { amount: parseFloat(amount) },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );

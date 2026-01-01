@@ -17,7 +17,7 @@ const ExpenseTrends = ({ userId }) => {
   const fetchTrends = async () => {
     setLoading(true);
     try {
-      const res = await api.get(`/api/analytics/trends/${period}`, {
+      const res = await api.get(`/analytics/trends/${period}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       setTrends(res.data.trends);
