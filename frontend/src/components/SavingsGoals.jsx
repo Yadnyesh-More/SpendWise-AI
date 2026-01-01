@@ -29,7 +29,7 @@ const SavingsGoals = ({ userId }) => {
     const formData = new FormData(e.target);
     
     try {
-      await api.post('/api/goals', {
+      await api.post('/goals', {
         name: formData.get('name'),
         target: parseFloat(formData.get('target')),
         deadline: formData.get('deadline')
