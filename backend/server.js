@@ -75,6 +75,7 @@ app.post('/test', (req, res) => {
   res.json({ success: true, received: req.body });
 });
 
+app.use('/api', goalsRouter); 
 // Auth routes
 app.use('/api/auth', authRoutes);
 
@@ -84,7 +85,6 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/export', exportRoutes);
 app.use('/api/admin', authMiddleware, adminRoutes);
 app.use('/api/ai', authMiddleware, aiRoutes);
-app.use('/api', goalsRouter); 
 
 // Keep backend alive
 setInterval(() => {
