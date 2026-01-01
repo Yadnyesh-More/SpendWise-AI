@@ -17,7 +17,7 @@ import authMiddleware from './src/middleware/auth.js';
 import analyticsRoutes from './src/routes/analytics.js';
 import exportRoutes from './src/routes/export.js';
 import fraudDetection from './src/middleware/fraudDetection.js';
-import goalsRouter from './routes/goals.js';
+import goalsRouter from './src/routes/goals.js';
 
 dotenv.config();
 
