@@ -5,7 +5,7 @@ import auth from '../middleware/auth.js';
 const router = express.Router();
 
 // GET all goals for user
-router.get('/', auth, async (req, res) => {
+router.get('/goals', auth, async (req, res) => {
   try {
     const goals = await Goal.find({ userId: req.user.userId }).sort({ createdAt: -1 });
     res.json(goals);
@@ -15,7 +15,7 @@ router.get('/', auth, async (req, res) => {
 });
 
 // POST create goal (existing)
-router.post('/', auth, async (req, res) => {
+router.post('/goals', auth, async (req, res) => {
   try {
     const goal = new Goal({
       userId: req.user.userId,
