@@ -264,7 +264,7 @@ function Dashboard({ user }) {
           {/* Components */}
           <ExpenseTrends userId={user.id} />
           <FraudAlerts userId={user.id} />
-          <SavingsGoals userId={user.id} />
+          {/* <SavingsGoals userId={user.id} /> */}
         </div>
       </div>
 
