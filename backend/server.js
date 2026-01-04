@@ -17,7 +17,7 @@ import authMiddleware from './src/middleware/auth.js';
 import analyticsRoutes from './src/routes/analytics.js';
 import exportRoutes from './src/routes/export.js';
 import fraudDetection from './src/middleware/fraudDetection.js';
-import goalsRouter from './src/routes/goals.js';
+// import goalsRouter from './src/routes/goals.js';
 
 dotenv.config();
 
@@ -75,7 +75,7 @@ app.post('/test', (req, res) => {
   res.json({ success: true, received: req.body });
 });
 
-app.use('/api', goalsRouter); 
+// app.use('/api', goalsRouter); 
 // Auth routes
 app.use('/api/auth', authRoutes);
 
