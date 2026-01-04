@@ -6,7 +6,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import api from '../api';
 import ExpenseTrends from '../components/ExpenseTrends';
 import FraudAlerts from '../components/FraudAlerts';
-import SavingsGoals from '../components/SavingsGoals';
+// import SavingsGoals from '../components/SavingsGoals';
 import { exportCSV, exportPDF ,formatCurrency} from '../utils/exportUtils';
 
 function Dashboard({ user }) {
