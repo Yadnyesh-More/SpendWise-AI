@@ -39,9 +39,9 @@ export const exportPDF = async (month = 'all' , userId) => {
 };
 
 // Backend CSV Export - Alternative (if you want server-side CSV too)
-export const exportCSVBackend = async (month = 'all') => {
+export const exportCSVBackend = async (month = 'all', userId) => {
   try {
-    const url = `${API_BASE}/api/export/csv/${month}`;
+    const url = `${API_BASE}/api/export/csv/${month}?userId=${userId}`;
     window.open(url, '_blank');
   } catch (error) {
     console.error('CSV backend export failed:', error);
