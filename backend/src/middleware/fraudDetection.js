@@ -1,13 +1,10 @@
-// backend/middleware/fraudDetection.js
 import Transaction from '../models/Transaction.js';
 import nodemailer from 'nodemailer';
 
-// Simple in-memory alerts (use Redis in production)
 const fraudAlerts = new Map();
 
 const sendFraudAlert = async (userId, amount, merchant) => {
-  // Email alert (configure in production)
-  console.log(`🚨 FRAUD ALERT: User ${userId} - ₹${amount} at ${merchant}`);
+  // console.log(`🚨 FRAUD ALERT: User ${userId} - ₹${amount} at ${merchant}`);
   
   // Store for frontend
   fraudAlerts.set(userId, {

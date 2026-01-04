@@ -6,7 +6,6 @@ function AIAdvisor({ suggestion, onDismiss }) {
 
   useEffect(() => {
     setAnimate(true);
-    // Auto-maximize when new suggestion arrives (after transaction)
     setIsMinimized(false);
   }, [suggestion]);
 
@@ -22,7 +21,7 @@ function AIAdvisor({ suggestion, onDismiss }) {
         />
       )}
 
-      {/* AI Advisor Card - NEW DARKER COLORS */}
+      {/* AI Advisor Card*/}
       <div className={`fixed z-50 transition-all duration-500 ${
         isMinimized 
           ? 'bottom-6 right-6 w-80' 
@@ -70,7 +69,6 @@ function AIAdvisor({ suggestion, onDismiss }) {
 
           {!isMinimized && (
             <>
-              {/* Main Suggestion - BETTER READABILITY */}
               <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 
                               border border-indigo-400/30 rounded-2xl p-6 mb-6 
                               backdrop-blur-xl shadow-inner">
@@ -83,7 +81,7 @@ function AIAdvisor({ suggestion, onDismiss }) {
                 </div>
               </div>
 
-              {/* Metrics Grid - HIGHER CONTRAST */}
+              {/* Metrics Grid*/}
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="group bg-gradient-to-br from-red-500/15 to-pink-500/15 
                                border-2 border-red-400/40 rounded-2xl p-5 backdrop-blur-xl 
@@ -111,7 +109,7 @@ function AIAdvisor({ suggestion, onDismiss }) {
                 </div>
               </div>
 
-              {/* Action Button - BETTER VISIBILITY */}
+              {/* Action Button*/}
               <button className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 
                                 hover:from-indigo-600 hover:to-purple-700 
                                 border-2 border-indigo-400/50 text-white font-black 

@@ -1,5 +1,4 @@
 import Transaction from '../models/Transaction.js';
-// import redis from '../config/redis.js';
 
 // Create Transaction
 export const createTransaction = async (req, res) => {

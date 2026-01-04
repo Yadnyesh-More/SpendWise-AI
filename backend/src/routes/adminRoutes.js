@@ -4,7 +4,7 @@ import Transaction from '../models/Transaction.js';
 
 const router = express.Router();
 
-// Get all users (admin only)
+// Get all users
 router.get('/users', async (req, res) => {
   try {
     // Check if user is admin
@@ -30,7 +30,7 @@ router.get('/users', async (req, res) => {
   }
 });
 
-// Get system statistics
+// Get statistics
 router.get('/stats', async (req, res) => {
   try {
     // Check if user is admin

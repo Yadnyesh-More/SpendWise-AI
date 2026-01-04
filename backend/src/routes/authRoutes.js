@@ -8,7 +8,7 @@ console.log('✅ authRoutes loaded');
 const router = express.Router();
 
 
-// Helper function to generate JWT token
+// generate JWT token
 function generateToken(userId) {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
     expiresIn: '7d'

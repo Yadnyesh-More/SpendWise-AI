@@ -5,7 +5,7 @@ import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
-// ✅ 1. EXPENSE TRENDS (7D/30D/90D)
+// EXPENSE TRENDS (7D/30D/90D)
 router.get('/trends/:period', auth, async (req, res) => {
   try {
     const { userId } = req.user;
@@ -72,7 +72,7 @@ router.get('/trends/:period', auth, async (req, res) => {
   }
 });
 
-// ✅ 2. CATEGORY BREAKDOWN
+// 2. CATEGORY BREAKDOWN
 router.get('/categories', auth, async (req, res) => {
   try {
     const { userId } = req.user;
@@ -119,7 +119,7 @@ router.get('/categories', auth, async (req, res) => {
   }
 });
 
-// ✅ 3. SPENDING PREDICTIONS
+// 3. SPENDING PREDICTIONS
 router.get('/predictions', auth, async (req, res) => {
   try {
     const { userId } = req.user;
@@ -170,7 +170,7 @@ router.get('/predictions', auth, async (req, res) => {
   }
 });
 
-// ✅ 4. FRAUD ALERTS
+// 4. FRAUD ALERTS
 router.get('/fraud-alerts', auth, async (req, res) => {
   try {
     const { userId } = req.user;
@@ -203,7 +203,7 @@ router.get('/fraud-alerts', auth, async (req, res) => {
   }
 });
 
-// ✅ 5. OVERVIEW SUMMARY
+// 5. OVERVIEW SUMMARY
 router.get('/overview', auth, async (req, res) => {
   try {
     const { userId } = req.user;

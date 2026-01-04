@@ -5,7 +5,7 @@ import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
-// ✅ PDF EXPORT
+// PDF EXPORT
 router.get('/pdf/:month?', auth, async (req, res) => {
   try {
     const { userId } = req.user;
@@ -60,7 +60,7 @@ router.get('/pdf/:month?', auth, async (req, res) => {
   }
 });
 
-// ✅ CSV EXPORT
+// CSV EXPORT
 router.get('/csv/:month?', auth, async (req, res) => {
   try {
     const { userId } = req.user;

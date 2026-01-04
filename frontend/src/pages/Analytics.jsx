@@ -19,7 +19,7 @@ function Analytics() {
       setLoading(true);
       const res = await api.get('/transactions/analytics');
       if (res.data.success) {
-        // 🔹 Fix categories data to ensure name field exists
+        //  Fix categories data to ensure name field exists
         const fixedCategories = res.data.categories.map(cat => ({
           name: cat.name || cat.category || cat._id || 'Other',
           value: cat.value || 0
@@ -43,7 +43,7 @@ function Analytics() {
     ? (data.monthly.reduce((sum, m) => sum + m.expense, 0) / data.monthly.length).toFixed(0)
     : 0;
 
-  // 🔹 Custom Tooltip for Pie Chart
+  //  Custom Tooltip for Pie Chart
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
@@ -58,8 +58,7 @@ function Analytics() {
     return null;
   };
 
-  // 🔹 Debug data (remove after testing)
-  //console.log('🧁 Pie data:', data.categories);
+  //  Debug data (remove after testing)
 
   return (
     <div className="min-h-screen bg-dark-primary">
@@ -126,7 +125,7 @@ function Analytics() {
             )}
           </div>
 
-          {/* Spending by Category - ✅ FIXED */}
+          {/* Spending by Category */}
           <div className="bg-dark-surface border-2 border-pink-400/50 rounded-3xl p-8 shadow-lg">
             <div className="bg-gradient-to-r from-pink-500/20 to-rose-500/20 rounded-2xl px-4 py-3 mb-6 border border-pink-400/30">
               <h2 className="text-2xl font-black text-pink-300">🎯 Spending by Category</h2>

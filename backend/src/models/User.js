@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String
-      // Password can be empty for OAuth users
     },
     googleId: {
       type: String
@@ -47,7 +46,6 @@ userSchema.pre('save', async function (next) {
   }
 });
 
-// Method to compare passwords
 userSchema.methods.matchPassword = async function (enteredPassword) {
   if (!this.password) return false; // OAuth users have no password
   return await bcrypt.compare(enteredPassword, this.password);

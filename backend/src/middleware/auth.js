@@ -33,5 +33,4 @@ export const authMiddleware = async (req, res, next) => {
   }
 };
 
-// Also export as default
 export default authMiddleware;
