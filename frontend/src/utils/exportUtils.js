@@ -27,10 +27,10 @@ export const exportCSV = (transactions, filename = 'transactions.csv') => {
 };
 
 // PDF Export - Backend API call (FIXED URL)
-export const exportPDF = async (month = 'all') => {
+export const exportPDF = async (month = 'all' , userId) => {
   try {
     // Call your Render backend directly
-    const url = `${API_BASE}/api/export/pdf/${month}`;
+    const url = `${API_BASE}/api/export/pdf/${month}?userId=${userId}`;
     window.open(url, '_blank');
   } catch (error) {
     console.error('PDF export failed:', error);

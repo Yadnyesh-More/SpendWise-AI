@@ -6,11 +6,14 @@ import auth from '../middleware/auth.js';
 const router = express.Router();
 
 // PDF EXPORT - Fixed type logic + better error handling
-router.get('/pdf/:month?', auth, async (req, res) => {
+router.get('/pdf/:month?', async (req, res) => {
   try {
     const { userId } = req.user;
+    if (!userId) {
+      return res.status(400).json({ success: false, message: 'userId query param required' });
+    }
+
     const { month } = req.params;
-    
     // Filter by month if provided (YYYY-MM format)
     let match = { userId };
     if (month) {

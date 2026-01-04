@@ -254,7 +254,7 @@ function Dashboard({ user }) {
               📊 Export CSV
             </button>
             <button 
-              onClick={() => exportPDF(selectedMonth)}
+              onClick={() => exportPDF(selectedMonth,user.id)}
               className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all"
             >
               📄 Export PDF
