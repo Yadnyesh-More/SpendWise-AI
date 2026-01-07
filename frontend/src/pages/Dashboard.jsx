@@ -8,6 +8,7 @@ import ExpenseTrends from '../components/ExpenseTrends';
 import FraudAlerts from '../components/FraudAlerts';
 // import SavingsGoals from '../components/SavingsGoals';
 import { exportCSV, exportPDF ,formatCurrency} from '../utils/exportUtils';
+import { BarChart } from 'recharts';
 
 function Dashboard({ user }) {
   const [summary, setSummary] = useState({
@@ -372,3 +373,4 @@ function Dashboard({ user }) {
 }
 
 export default Dashboard;
+// BarChart
