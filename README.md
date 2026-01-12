@@ -12,3 +12,8 @@ npm install
 
 4) Start project:
 npm run dev
+
+## Author
+Yadnyesh More  
+Original repository owner
+
