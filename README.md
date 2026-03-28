@@ -3,8 +3,8 @@
 A full‑stack personal finance web app that helps users track income, expenses, set budgets and savings goals, and get AI‑driven financial advice in real time.
 
 SpendWise AI Dashboard Preview<br>
-<img width="750" height="875" alt="Screenshot 2026-01-04 202526" src="https://github.com/user-attachments/assets/d4f3b325-f544-4e30-8850-5ee6a9acc3fd" /><br>
-<img width="750" height="875" alt="Screenshot 2026-01-04 202743" src="https://github.com/user-attachments/assets/64238d07-4bb5-4265-ac9a-27a3f68777bb" />
+<img width="750" height="875" align="center" alt="Screenshot 2026-01-04 202526" src="https://github.com/user-attachments/assets/d4f3b325-f544-4e30-8850-5ee6a9acc3fd" /><br><br>
+<img width="750" height="875" align="center" alt="Screenshot 2026-01-04 202743" src="https://github.com/user-attachments/assets/64238d07-4bb5-4265-ac9a-27a3f68777bb" />
 
 
 ---
@@ -31,19 +31,19 @@ The app allows users to:
 ## 🖼️ Screenshots
 
 ## Login Page
-![Login Page](https://github.com/user-attachments/assets/2e60860d-a15d-4c71-9a7b-867adbeceed0)
+<img width="600" height="750" alt="Screenshot 2026-01-04 202837" src="https://github.com/user-attachments/assets/2e60860d-a15d-4c71-9a7b-867adbeceed0" />
 
 ## Register Page
-![Register Page](https://github.com/user-attachments/assets/96422b1a-f140-4047-b5e9-df603e365c58)
+<img width="569" height="902" alt="Screenshot 2026-01-04 202821" src="https://github.com/user-attachments/assets/96422b1a-f140-4047-b5e9-df603e365c58" />
 
 ## Dashboard with AI Coach
-![Dashboard](https://github.com/user-attachments/assets/6e37f618-d622-4366-9c47-02fc21d33eff)
+<img width="750" height="875" alt="Screenshot 2026-01-04 202547" src="https://github.com/user-attachments/assets/6e37f618-d622-4366-9c47-02fc21d33eff" />
 
 ## Budget & Goals
-![Budget](https://github.com/user-attachments/assets/9734659c-a5ea-41af-9001-8ccb57ed5eb4)
+<img width="750" height="875" alt="Screenshot 2026-01-04 202712" src="https://github.com/user-attachments/assets/9734659c-a5ea-41af-9001-8ccb57ed5eb4" />
 
 ## Profile
-![Profile](https://github.com/user-attachments/assets/f918371d-19ec-4b8c-8fda-f6f53f8b4957)
+<img width="1190" height="1015" alt="Screenshot 2026-01-04 202800" src="https://github.com/user-attachments/assets/f918371d-19ec-4b8c-8fda-f6f53f8b4957" />
 ---
 
 ## 🧩 Features
