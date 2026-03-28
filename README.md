@@ -31,10 +31,10 @@ The app allows users to:
 ## 🖼️ Screenshots
 
 ## Login Page
-<img width="600" height="750" alt="Screenshot 2026-01-04 202837" src="https://github.com/user-attachments/assets/2e60860d-a15d-4c71-9a7b-867adbeceed0" />
+<img width="500" height="650" alt="Screenshot 2026-01-04 202837" src="https://github.com/user-attachments/assets/2e60860d-a15d-4c71-9a7b-867adbeceed0" />
 
 ## Register Page
-<img width="569" height="902" alt="Screenshot 2026-01-04 202821" src="https://github.com/user-attachments/assets/96422b1a-f140-4047-b5e9-df603e365c58" />
+<img width="500" height="650" alt="Screenshot 2026-01-04 202821" src="https://github.com/user-attachments/assets/96422b1a-f140-4047-b5e9-df603e365c58" />
 
 ## Dashboard with AI Coach
 <img width="750" height="875" alt="Screenshot 2026-01-04 202547" src="https://github.com/user-attachments/assets/6e37f618-d622-4366-9c47-02fc21d33eff" />
@@ -43,7 +43,7 @@ The app allows users to:
 <img width="750" height="875" alt="Screenshot 2026-01-04 202712" src="https://github.com/user-attachments/assets/9734659c-a5ea-41af-9001-8ccb57ed5eb4" />
 
 ## Profile
-<img width="1190" height="1015" alt="Screenshot 2026-01-04 202800" src="https://github.com/user-attachments/assets/f918371d-19ec-4b8c-8fda-f6f53f8b4957" />
+<img width="600" height="750" alt="Screenshot 2026-01-04 202800" src="https://github.com/user-attachments/assets/f918371d-19ec-4b8c-8fda-f6f53f8b4957" />
 ---
 
 ## 🧩 Features
