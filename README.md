@@ -2,7 +2,7 @@
 
 A full‑stack personal finance web app that helps users track income, expenses, set budgets and savings goals, and get AI‑driven financial advice in real time.
 
-SpendWise AI Dashboard Preview
+SpendWise AI Dashboard Preview<br>
 <img width="750" height="875" alt="Screenshot 2026-01-04 202526" src="https://github.com/user-attachments/assets/d4f3b325-f544-4e30-8850-5ee6a9acc3fd" /><br>
 <img width="750" height="875" alt="Screenshot 2026-01-04 202743" src="https://github.com/user-attachments/assets/64238d07-4bb5-4265-ac9a-27a3f68777bb" />
 
