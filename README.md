@@ -3,8 +3,8 @@
 A full‑stack personal finance web app that helps users track income, expenses, set budgets and savings goals, and get AI‑driven financial advice in real time.
 
 ![SpendWise AI Dashboard Preview](./screenshots/dashboard.png)
-<img width="1919" height="1017" alt="Screenshot 2026-01-04 202526" src="https://github.com/user-attachments/assets/d4f3b325-f544-4e30-8850-5ee6a9acc3fd" />
-<img width="1194" height="1002" alt="Screenshot 2026-01-04 202743" src="https://github.com/user-attachments/assets/64238d07-4bb5-4265-ac9a-27a3f68777bb" />
+<img width="600" height="800" alt="Screenshot 2026-01-04 202526" src="https://github.com/user-attachments/assets/d4f3b325-f544-4e30-8850-5ee6a9acc3fd" />
+<img width="800" height="950" alt="Screenshot 2026-01-04 202743" src="https://github.com/user-attachments/assets/64238d07-4bb5-4265-ac9a-27a3f68777bb" />
 
 
 ---
@@ -30,14 +30,19 @@ The app allows users to:
 
 ## 🖼️ Screenshots
 
+## Login Page
 ![Login Page](https://github.com/user-attachments/assets/2e60860d-a15d-4c71-9a7b-867adbeceed0)
 
+## Register Page
 ![Register Page](https://github.com/user-attachments/assets/96422b1a-f140-4047-b5e9-df603e365c58)
 
-![Dashboard with AI Coach](https://github.com/user-attachments/assets/6e37f618-d622-4366-9c47-02fc21d33eff)
+## Dashboard with AI Coach
+![Dashboard](https://github.com/user-attachments/assets/6e37f618-d622-4366-9c47-02fc21d33eff)
 
-![Budget & Goals Overview](https://github.com/user-attachments/assets/9734659c-a5ea-41af-9001-8ccb57ed5eb4)
+## Budget & Goals
+![Budget](https://github.com/user-attachments/assets/9734659c-a5ea-41af-9001-8ccb57ed5eb4)
 
+## Profile
 ![Profile](https://github.com/user-attachments/assets/f918371d-19ec-4b8c-8fda-f6f53f8b4957)
 ---
 
