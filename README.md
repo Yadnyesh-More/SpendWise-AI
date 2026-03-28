@@ -1,29 +1,14 @@
-!) Clone repo:
-git clone https://github.com/username/SpendWise-Ai.git
-
-2) Install dependencies:
-cd SpendWise-Ai/backend
-npm install
-cd ../frontend
-npm install
-
-
-3) Create .env manually (see your local .env).
-
-4) Start project:
-npm run dev
-
-## Author
-Yadnyesh More  
-Original repository owner
-
 # SpendWise AI – Personal Finance & AI Budget Advisor
 
 A full‑stack personal finance web app that helps users track income, expenses, set budgets and savings goals, and get AI‑driven financial advice in real time.
 
 ![SpendWise AI Dashboard Preview](./screenshots/dashboard.png)
+<img width="1919" height="1017" alt="Screenshot 2026-01-04 202526" src="https://github.com/user-attachments/assets/d4f3b325-f544-4e30-8850-5ee6a9acc3fd" />
+<img width="1194" height="1002" alt="Screenshot 2026-01-04 202743" src="https://github.com/user-attachments/assets/64238d07-4bb5-4265-ac9a-27a3f68777bb" />
+
 
 ---
+
 
 ## 📌 Overview
 
@@ -35,6 +20,7 @@ SpendWise AI is a web‑based budgeting and expense‑tracking application built
 - **Render** (backend hosting)
 
 The app allows users to:
+
 - Sign up and log in securely.
 - Add and categorize transactions (income & expenses).
 - Set monthly budgets and savings goals.
@@ -44,12 +30,14 @@ The app allows users to:
 
 ## 🖼️ Screenshots
 
-![Login Page](./screenshots/login.png)
-![Register Page](./screenshots/register.png)
-![Dashboard with AI Coach](./screenshots/dashboard_ai.png)
-![Transaction List](./screenshots/transactions.png)
-![Budget & Goals Overview](./screenshots/budget_goals.png)
-
+![Login Page](<img width="952" height="977" alt="Screenshot 2026-01-04 202837" src="https://github.com/user-attachments/assets/2e60860d-a15d-4c71-9a7b-867adbeceed0" />)
+![Register Page](<img width="569" height="902" alt="Screenshot 2026-01-04 202821" src="https://github.com/user-attachments/assets/96422b1a-f140-4047-b5e9-df603e365c58" />)
+![Dashboard with AI Coach](<img width="1919" height="1013" alt="Screenshot 2026-01-04 202547" src="https://github.com/user-attachments/assets/6e37f618-d622-4366-9c47-02fc21d33eff" />
+)
+![Budget & Goals Overview](<img width="1346" height="1007" alt="Screenshot 2026-01-04 202712" src="https://github.com/user-attachments/assets/9734659c-a5ea-41af-9001-8ccb57ed5eb4" />
+)
+![Profile](<img width="1190" height="1015" alt="Screenshot 2026-01-04 202800" src="https://github.com/user-attachments/assets/f918371d-19ec-4b8c-8fda-f6f53f8b4957" />
+)
 ---
 
 ## 🧩 Features
@@ -181,22 +169,6 @@ All endpoints are under `/api/...`:
 
 ---
 
-## 📣 Contribution Guidelines
-
-Contributions are welcome! If you want to improve SpendWise AI:
-1. Fork the repo.
-2. Create a feature branch: `git checkout -b feature/your-feature`.
-3. Commit your changes.
-4. Push to the branch: `git push origin feature/your-feature`.
-5. Open a pull request with a clear description.
-
-Please:
-- Keep code clean and readable.
-- Follow existing naming and folder conventions.
-- Add comments where logic is not obvious.
-
----
-
 ## 📄 License
 
 This project is licensed under the **MIT License**. See the `LICENSE` file for details.
@@ -207,7 +179,11 @@ This project is licensed under the **MIT License**. See the `LICENSE` file for d
 
 If you have any questions, suggestions:
 
-- **GitHub**: `https://github.com/YOUR_USERNAME/spendwise-ai`
-- **LinkedIn / Portfolio Link**: (add your profile here)
+- **GitHub**: `https://github.com/Yadnyesh-More/SpendWise-AI`
+- **LinkedIn Profile Link**:`https://www.linkedin.com/in/yadnyesh-more-7b049b27b`
 
 ---
+
+## Author
+Yadnyesh More  
+Original repository owner
